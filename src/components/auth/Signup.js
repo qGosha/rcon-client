@@ -43,6 +43,9 @@ const useStyles = makeStyles(theme => ({
   },
   loading: {
     color: "green"
+  },
+  errors: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -167,10 +170,10 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
             </Grid>
           </Grid>
         </form>
+        <Grid container className={classes.errors}>
+          <SimpleErrorsList errors={{ ...errors, ...signupErrors }} />
+        </Grid>
       </div>
-      <Grid item xs={12}>
-        <SimpleErrorsList errors={{ ...errors, ...signupErrors }} />
-      </Grid>
     </Container>
   );
 };

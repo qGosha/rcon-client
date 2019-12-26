@@ -1,9 +1,11 @@
 import { from, of } from "rxjs";
-import { catchError, map, mergeMap } from "rxjs/operators";
+import { catchError, map, mergeMap, tap } from "rxjs/operators";
 import { ofType } from "redux-observable";
 
 import { Api } from "src/utils/Api";
 import { ActionTypes } from "src/actions/User";
+
+import history from "src/utils/history";
 
 export const login = actions$ =>
   actions$.pipe(
@@ -51,6 +53,7 @@ export const signup = actions$ =>
           type: ActionTypes.SIGNUP_SUCCESS,
           payload: user
         })),
+        tap(() => history.push("/")),
         catchError(error => {
           return of({
             type: ActionTypes.SIGNUP_ERROR,

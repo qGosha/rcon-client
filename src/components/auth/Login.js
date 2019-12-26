@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { login } from "src/actions/User";
-
+import { SimpleErrorsList } from "src/components/shared/Errors";
 import { RouterLink } from "src/components/shared/RouterLink";
+import { validate } from "src/utils/validation";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -40,15 +41,23 @@ const useStyles = makeStyles(theme => ({
   },
   loading: {
     color: "green"
+  },
+  errors: {
+    marginTop: theme.spacing(2)
   }
 }));
 
 const LoginComponent = ({ login, authOrSignupLoading }) => {
   const loginUser = e => {
     e.preventDefault();
-    login({ email, password });
+    if (!validate(["email", "password"], { email, password }, setErrors)) {
+      login({ email, password });
+    }
   };
-
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false
+  });
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,6 +85,7 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
             name="email"
             autoComplete="email"
             autoFocus
+            error={!!errors.email}
             onChange={({ target }) => setEmail(target.value)}
           />
           <TextField
@@ -89,6 +99,7 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
             label="Password"
             type="password"
             id="password"
+            error={!!errors.password}
             autoComplete="current-password"
             onChange={({ target }) => setPassword(target.value)}
           />
@@ -124,6 +135,9 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
           </Grid>
         </form>
       </div>
+      <Grid container className={classes.errors}>
+        <SimpleErrorsList errors={errors} />
+      </Grid>
     </Container>
   );
 };

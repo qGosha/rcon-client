@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import { Router, Route, Switch } from "react-router-dom";
+import history from "src/utils/history";
 import { checkLoggedIn } from "src/actions/User";
 
 import { Login } from "src/components/auth/Login";
@@ -17,13 +17,13 @@ const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
   if (initialLoading) return null;
 
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route exact path="/" component={loggedIn ? Dashboard : Login} />
         <Route path="/signup" component={Signup} />
         <Route render={() => "No match"} />
       </Switch>
-    </BrowserRouter>
+    </Router>
   );
 };
 
