@@ -7,6 +7,7 @@ import { checkLoggedIn } from "src/actions/User";
 
 import { Login } from "src/components/auth/Login";
 import { Signup } from "src/components/auth/Signup";
+import { Dashboard } from "src/components/dashboard/Dashboard";
 
 const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
   useEffect(() => {
@@ -14,13 +15,13 @@ const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
   }, [checkLoggedIn]);
 
   if (initialLoading) return null;
-  const Dashboard = () => "Dashboard";
+
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={loggedIn ? Dashboard : Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/smth" component={() => "Somethong"} />
+        <Route render={() => "No match"} />
       </Switch>
     </BrowserRouter>
   );

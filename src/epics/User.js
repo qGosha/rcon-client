@@ -60,3 +60,21 @@ export const signup = actions$ =>
       )
     )
   );
+
+export const logout = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.LOGOUT),
+    mergeMap(() =>
+      from(Api.logout()).pipe(
+        map(() => ({
+          type: ActionTypes.LOGOUT_SUCCESS
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.LOGOUT_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );

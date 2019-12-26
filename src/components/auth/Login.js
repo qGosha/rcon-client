@@ -18,6 +18,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -36,6 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  loading: {
+    color: "green"
   }
 }));
 
@@ -98,9 +102,13 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            loading={authOrSignupLoading}
+            disabled={authOrSignupLoading}
           >
-            Sign In
+            {authOrSignupLoading ? (
+              <CircularProgress className={classes.loading} size={24} />
+            ) : (
+              "Sign In"
+            )}
           </Button>
           <Grid container>
             <Grid item xs>

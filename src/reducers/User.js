@@ -1,6 +1,6 @@
 import { ActionTypes } from "src/actions/User";
 
-const { LOGIN_SUCCESS, CHECK_LOGGED_IN_SUCCESS } = ActionTypes;
+const { LOGIN_SUCCESS, CHECK_LOGGED_IN_SUCCESS, SIGNUP_SUCCESS } = ActionTypes;
 
 export const defaultState = {
   user: null
@@ -12,6 +12,7 @@ export const user = (state = defaultState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
     case CHECK_LOGGED_IN_SUCCESS:
+    case SIGNUP_SUCCESS:
       return { ...state, user: payload };
     default:
       return state;

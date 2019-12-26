@@ -5,9 +5,12 @@ export const ActionTypes = {
   CHECK_LOGGED_IN: "CHECK_LOGGED_IN",
   CHECK_LOGGED_IN_SUCCESS: "CHECK_LOGGED_IN_SUCCESS",
   CHECK_LOGGED_IN_ERROR: "CHECK_LOGGED_IN_ERROR",
-  SIGNUP: "LOGIN",
-  SIGNUP_SUCCESS: "LOGIN_SUCCESS",
-  SIGNUP_ERROR: "LOGIN_ERROR"
+  SIGNUP: "SIGNUP",
+  SIGNUP_SUCCESS: "SIGNUP_SUCCESS",
+  SIGNUP_ERROR: "SIGNUP_ERROR",
+  LOGOUT: "LOGOUT",
+  LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
+  LOGOUT_ERROR: "LOGOUT_ERROR"
 };
 
 export const login = payload => ({
@@ -22,4 +25,8 @@ export const checkLoggedIn = () => ({
 export const signup = payload => ({
   type: ActionTypes.SIGNUP,
   payload
+});
+
+export const logout = () => ({
+  type: ActionTypes.LOGOUT
 });

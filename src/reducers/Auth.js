@@ -6,14 +6,18 @@ const {
   LOGIN_ERROR,
   CHECK_LOGGED_IN,
   CHECK_LOGGED_IN_SUCCESS,
-  CHECK_LOGGED_IN_ERROR
+  CHECK_LOGGED_IN_ERROR,
+  LOGOUT,
+  SIGNUP,
+  SIGNUP_SUCCESS,
+  SIGNUP_ERROR
 } = ActionTypes;
 
 export const defaultState = {
   loggedIn: false,
   initialLoading: false,
   authOrSignupLoading: false,
-  errors: null
+  errors: {}
 };
 
 export const auth = (state = defaultState, action) => {
@@ -25,11 +29,21 @@ export const auth = (state = defaultState, action) => {
     case CHECK_LOGGED_IN_ERROR:
       return { ...state, initialLoading: false };
     case LOGIN:
-      return { ...state, loading: true };
+    case SIGNUP:
+      return { ...state, authOrSignupLoading: true, errors: {} };
     case LOGIN_SUCCESS:
-      return { ...state, loggedIn: true, loading: false };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        loggedIn: true,
+        authOrSignupLoading: false,
+        errors: {}
+      };
     case LOGIN_ERROR:
-      return { ...state, errors: action.payload, loading: false };
+    case SIGNUP_ERROR:
+      return { ...state, errors: action.payload, authOrSignupLoading: false };
+    case LOGOUT:
+      return defaultState;
     default:
       return state;
   }
