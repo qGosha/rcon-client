@@ -51,7 +51,7 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
   const loginUser = e => {
     e.preventDefault();
     if (!validate(["email", "password"], { email, password }, setErrors)) {
-      login({ email, password });
+      login({ email, password, remember_me: rememberMe });
     }
   };
   const [errors, setErrors] = useState({
@@ -61,6 +61,7 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState("0");
 
   return (
     <Container component="main" maxWidth="xs">
@@ -104,7 +105,13 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
             onChange={({ target }) => setPassword(target.value)}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value={rememberMe}
+                color="primary"
+                onChange={() => setRememberMe(rememberMe === "0" ? "1" : "0")}
+              />
+            }
             label="Remember me"
           />
           <Button
