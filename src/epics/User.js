@@ -72,6 +72,7 @@ export const logout = actions$ =>
         map(() => ({
           type: ActionTypes.LOGOUT_SUCCESS
         })),
+        tap(() => history.push("/")),
         catchError(error => {
           return of({
             type: ActionTypes.LOGOUT_ERROR,

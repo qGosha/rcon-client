@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
 import history from "src/utils/history";
 import { checkLoggedIn } from "src/actions/User";
 
@@ -61,7 +61,15 @@ const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
             <Route
               exact
               path="/"
-              component={loggedIn ? Dashboard : IntroPage}
+              render={() =>
+                loggedIn ? <Redirect to="/dashboard" /> : <IntroPage />
+              }
+            />
+            <Route
+              path="/dashboard"
+              render={({ match }) =>
+                loggedIn ? <Dashboard match={match} /> : <Redirect to="/" />
+              }
             />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />

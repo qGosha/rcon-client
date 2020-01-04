@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import FormatIndentIncreaseIcon from "@material-ui/icons/FormatIndentIncrease";
 import SearchIcon from "@material-ui/icons/Search";
+import ListIcon from "@material-ui/icons/List";
+import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { MenuCard } from "src/components/shared/MenuCard";
 
@@ -11,17 +14,27 @@ export const userRoles = {
   REALTOR: "realtor"
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexDirection: "column",
+    marginTop: theme.spacing(3)
+  }
+}));
+
 const DashboardMenuComponent = ({ user }) => {
   let data = [];
+  const classes = useStyles();
 
   if (user.role === userRoles.CLIENT) {
     data = [
       {
         title: "Fill out the form",
         icon: FormatIndentIncreaseIcon,
-        onClick: () => {}
+        onClick: () => {},
+        to: "/dashboard/order"
       },
-      { title: "Search an agent", icon: SearchIcon, onClick: () => {} }
+      { title: "Search an agent", icon: SearchIcon, onClick: () => {} },
+      { title: "See my orders", icon: ListIcon, onClick: () => {} }
     ];
   } else {
     data = [
@@ -33,15 +46,20 @@ const DashboardMenuComponent = ({ user }) => {
       { title: "Search an agent", icon: SearchIcon, onClick: () => {} }
     ];
   }
-  return data.map((cardData, index) => (
-    <MenuCard
-      key={index}
-      title={cardData.title}
-      icon={cardData.icon}
-      onClick={cardData.onClick}
-      align={index % 2 === 0 ? "right" : "left"}
-    />
-  ));
+  return (
+    <Grid container spacing={3} className={classes.root}>
+      {data.map((cardData, index) => (
+        <MenuCard
+          key={index}
+          title={cardData.title}
+          icon={cardData.icon}
+          onClick={cardData.onClick}
+          index={index}
+          to={cardData.to}
+        />
+      ))}
+    </Grid>
+  );
 };
 
 DashboardMenuComponent.propTypes = {
