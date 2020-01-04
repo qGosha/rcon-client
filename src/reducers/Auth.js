@@ -17,7 +17,8 @@ export const defaultState = {
   loggedIn: false,
   initialLoading: false,
   authOrSignupLoading: false,
-  errors: {}
+  signupErrors: {},
+  loginErrors: {}
 };
 
 export const auth = (state = defaultState, action) => {
@@ -32,16 +33,31 @@ export const auth = (state = defaultState, action) => {
     case SIGNUP:
       return { ...state, authOrSignupLoading: true, errors: {} };
     case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loggedIn: true,
+        authOrSignupLoading: false,
+        loginErrors: {}
+      };
     case SIGNUP_SUCCESS:
       return {
         ...state,
         loggedIn: true,
         authOrSignupLoading: false,
-        errors: {}
+        signupErrors: {}
       };
     case LOGIN_ERROR:
+      return {
+        ...state,
+        loginErrors: action.payload,
+        authOrSignupLoading: false
+      };
     case SIGNUP_ERROR:
-      return { ...state, errors: action.payload, authOrSignupLoading: false };
+      return {
+        ...state,
+        signupErrors: action.payload,
+        authOrSignupLoading: false
+      };
     case LOGOUT:
       return defaultState;
     default:

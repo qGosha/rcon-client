@@ -138,7 +138,7 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
                 <FormControlLabel
                   value={"client"}
                   control={<Radio />}
-                  label="Customer"
+                  label="Homebuyer/Homeowner"
                 />
                 <FormControlLabel
                   value={"realtor"}
@@ -180,7 +180,7 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
 
 const mapStateToProps = state => ({
   authOrSignupLoading: state.auth.authOrSignupLoading,
-  signupErrors: state.auth.errors
+  signupErrors: state.auth.signupErrors
 });
 
 SignupComponent.propTypes = {

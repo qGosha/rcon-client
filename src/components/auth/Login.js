@@ -1,11 +1,12 @@
 import { connect } from "react-redux";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { login } from "src/actions/User";
 import { SimpleErrorsList } from "src/components/shared/Errors";
 import { RouterLink } from "src/components/shared/RouterLink";
 import { validate } from "src/utils/validation";
+import history from "src/utils/history";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -47,7 +48,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const LoginComponent = ({ login, authOrSignupLoading }) => {
+const LoginComponent = ({
+  login,
+  authOrSignupLoading,
+  loginErrors,
+  loggedIn
+}) => {
+  useEffect(() => {
+    if (loggedIn) history.replace("/");
+  }, [loggedIn]);
+
   const loginUser = e => {
     e.preventDefault();
     if (!validate(["email", "password"], { email, password }, setErrors)) {
@@ -143,18 +153,22 @@ const LoginComponent = ({ login, authOrSignupLoading }) => {
         </form>
       </div>
       <Grid container className={classes.errors}>
-        <SimpleErrorsList errors={errors} />
+        <SimpleErrorsList errors={{ ...errors, ...loginErrors }} />
       </Grid>
     </Container>
   );
 };
 const mapStateToProps = state => ({
-  authOrSignupLoading: state.auth.authOrSignupLoading
+  authOrSignupLoading: state.auth.authOrSignupLoading,
+  loginErrors: state.auth.loginErrors,
+  loggedIn: state.auth.loggedIn
 });
 
 LoginComponent.propTypes = {
   authOrSignupLoading: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired
+  login: PropTypes.func.isRequired,
+  loginErrors: PropTypes.object.isRequired,
+  loggedIn: PropTypes.bool.isRequired
 };
 
 export const Login = connect(mapStateToProps, { login })(LoginComponent);

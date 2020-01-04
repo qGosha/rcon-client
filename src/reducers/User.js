@@ -3,7 +3,7 @@ import { ActionTypes } from "src/actions/User";
 const { LOGIN_SUCCESS, CHECK_LOGGED_IN_SUCCESS, SIGNUP_SUCCESS } = ActionTypes;
 
 export const defaultState = {
-  user: null
+  user: {}
 };
 
 export const user = (state = defaultState, action) => {

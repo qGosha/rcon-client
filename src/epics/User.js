@@ -16,10 +16,10 @@ export const login = actions$ =>
           type: ActionTypes.LOGIN_SUCCESS,
           payload: user
         })),
-        catchError(error => {
+        catchError(() => {
           return of({
             type: ActionTypes.LOGIN_ERROR,
-            payload: error
+            payload: { login: "Credtials are incorrect" }
           });
         })
       )

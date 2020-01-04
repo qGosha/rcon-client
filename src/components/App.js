@@ -10,11 +10,40 @@ import { Login } from "src/components/auth/Login";
 import { Signup } from "src/components/auth/Signup";
 import { Dashboard } from "src/components/dashboard/Dashboard";
 import { IntroPage } from "src/components/dashboard/IntroPage";
-import { ThemeProvider } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
-  const theme = useTheme();
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#393f8c"
+      },
+      secondary: {
+        main: "#7b58a1"
+      }
+    },
+    typography: {
+      fontFamily: [
+        "Raleway",
+        "Roboto",
+        '"Helvetica Neue"',
+        "Arial",
+        "sans-serif",
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"'
+      ].join(",")
+    },
+    overrides: {
+      MuiLink: {
+        underlineHover: {
+          "&:hover": {
+            textDecoration: "none"
+          }
+        }
+      }
+    }
+  });
   const styles = rootStyles();
 
   useEffect(() => {

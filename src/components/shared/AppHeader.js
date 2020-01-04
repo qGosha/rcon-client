@@ -29,39 +29,37 @@ const AppHeaderComponent = ({ loggedIn, logout }) => {
   const classes = useStyles();
 
   return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          {loggedIn && (
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Link
-            variant="h5"
-            className={classes.title}
-            component={RouterLink}
-            to="/"
+    <AppBar position="static" className={classes.root}>
+      <Toolbar>
+        {loggedIn && (
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
           >
-            Rcon
-          </Link>
-          {loggedIn ? (
-            <Button className={classes.link} onClick={logout}>
-              Logout
-            </Button>
-          ) : (
-            <ButtonLink className={classes.link} to="/login">
-              Login
-            </ButtonLink>
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Link
+          variant="h5"
+          className={classes.title}
+          component={RouterLink}
+          to="/"
+        >
+          Rcon
+        </Link>
+        {loggedIn ? (
+          <Button className={classes.link} onClick={logout}>
+            Logout
+          </Button>
+        ) : (
+          <ButtonLink className={classes.link} to="/login">
+            Login
+          </ButtonLink>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
