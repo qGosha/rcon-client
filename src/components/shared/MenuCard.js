@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import { RouterLink } from "src/components/shared/RouterLink";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -59,7 +56,7 @@ export const MenuCard = ({ title, icon: Icon, to, index }) => {
           component={RouterLink}
           to={to}
         >
-          <Icon className={classes.icon} />
+          {Icon && <Icon className={classes.icon} />}
           {title}
         </Link>
       </Grid>
@@ -70,6 +67,6 @@ export const MenuCard = ({ title, icon: Icon, to, index }) => {
 MenuCard.propTypes = {
   title: PropTypes.string.isRequired,
   to: PropTypes.string.isRequired,
-  icon: PropTypes.element,
+  icon: PropTypes.object,
   index: PropTypes.number.isRequired
 };

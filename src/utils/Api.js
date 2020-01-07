@@ -32,5 +32,11 @@ export const Api = {
       .post(`${serverAdress}/api/v1/logout`)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
+  },
+  sendClientOrder(payload) {
+    return axios
+      .post(`${serverAdress}/api/v1/orders`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
   }
 };

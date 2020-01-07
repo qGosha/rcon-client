@@ -24,7 +24,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
   },
   errors: {
     marginTop: theme.spacing(2)
+  },
+  main: {
+    paddingBottom: theme.spacing(2)
   }
 }));
 
@@ -55,7 +58,7 @@ const LoginComponent = ({
   loggedIn
 }) => {
   useEffect(() => {
-    if (loggedIn) history.replace("/");
+    if (loggedIn) history.replace("/dashboard");
   }, [loggedIn]);
 
   const loginUser = e => {
@@ -74,7 +77,7 @@ const LoginComponent = ({
   const [rememberMe, setRememberMe] = useState("0");
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className={classes.main}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

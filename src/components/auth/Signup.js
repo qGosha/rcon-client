@@ -25,7 +25,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
@@ -46,6 +46,9 @@ const useStyles = makeStyles(theme => ({
   },
   errors: {
     marginTop: theme.spacing(2)
+  },
+  main: {
+    paddingBottom: theme.spacing(2)
   }
 }));
 
@@ -54,12 +57,26 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
     e.preventDefault();
     if (
       !validate(
-        ["email", "password", "role", "confirmPassword"],
-        { email, password, role, confirmPassword },
+        [
+          "email",
+          "password",
+          "role",
+          "confirmPassword",
+          "lastName",
+          "firstName"
+        ],
+        { email, password, role, confirmPassword, lastName, firstName },
         setErrors
       )
     ) {
-      signup({ email, password, role, password_confirmation: confirmPassword });
+      signup({
+        email,
+        password,
+        role,
+        password_confirmation: confirmPassword,
+        client_attributes: { first_name: firstName },
+        realtor_attributes: { first_name: firstName, last_name: lastName }
+      });
     }
   };
 
@@ -73,8 +90,11 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
   const [password, setPassword] = useState("");
   const [role, setRole] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className={classes.main}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -85,6 +105,36 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
         </Typography>
         <form className={classes.form} noValidate onSubmit={signupUser}>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="first_name"
+                label={role === "realtor" ? "First Name" : "Your name"}
+                name="first_name"
+                autoComplete="first_name"
+                value={firstName}
+                error={!!errors.firstName}
+                onChange={({ target }) => setFirstName(target.value)}
+              />
+            </Grid>
+            {role === "realtor" && (
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="last_name"
+                  label="Last Name"
+                  name="last_name"
+                  autoComplete="last_name"
+                  value={lastName}
+                  error={!!errors.lastName}
+                  onChange={({ target }) => setLastName(target.value)}
+                />
+              </Grid>
+            )}
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
