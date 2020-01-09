@@ -17,67 +17,7 @@ import { sendClientOrder } from "src/actions/Orders";
 
 import { SimpleErrorsList } from "src/components/shared/Errors";
 
-const states = [
-  "AL",
-  "AK",
-  "AS",
-  "AZ",
-  "AR",
-  "CA",
-  "CO",
-  "CT",
-  "DE",
-  "DC",
-  "FM",
-  "FL",
-  "GA",
-  "GU",
-  "HI",
-  "ID",
-  "IL",
-  "IN",
-  "IA",
-  "KS",
-  "KY",
-  "LA",
-  "ME",
-  "MH",
-  "MD",
-  "MA",
-  "MI",
-  "MN",
-  "MS",
-  "MO",
-  "MT",
-  "NE",
-  "NV",
-  "NH",
-  "NJ",
-  "NM",
-  "NY",
-  "NC",
-  "ND",
-  "MP",
-  "OH",
-  "OK",
-  "OR",
-  "PW",
-  "PA",
-  "PR",
-  "RI",
-  "SC",
-  "SD",
-  "TN",
-  "TX",
-  "UT",
-  "VT",
-  "VI",
-  "VA",
-  "WA",
-  "WV",
-  "WI",
-  "WY"
-];
+import { states } from "src/components/constants/states";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -119,7 +59,7 @@ const FormLayoutComponent = ({
     if (!validate(Object.keys(errors), { city, state, email }, setErrors)) {
       const fields = {
         tel,
-        descr,
+        description: descr,
         order_type: match.params.type,
         address_attributes: {
           zip,

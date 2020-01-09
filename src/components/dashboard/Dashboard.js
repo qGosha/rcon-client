@@ -1,17 +1,19 @@
 import { connect } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Route, Switch } from "react-router-dom";
 
 import { logout } from "src/actions/User";
+// import { loadOrders } from "src/actions/Orders"
 
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 
 import { DashboardMenu } from "src/components/shared/DashboardMenu";
 import { OrderForm } from "src/components/forms/OrderForm";
+import { Orders } from "src/components/forms/OrderForm";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -24,11 +26,16 @@ const useStyles = makeStyles(theme => ({
 const DashboardComponent = ({ logout, match }) => {
   const classes = useStyles();
 
+  // useEffect(() => {
+  //   loadOrders()
+  // }, [])
+
   return (
     <Container maxWidth="md" className={classes.container}>
       <Switch>
         <Route exact path={`${match.url}`} component={DashboardMenu} />
         <Route path={`${match.url}/order`} component={OrderForm} />
+        <Route path={`${match.url}/orders`} component={Orders} />
       </Switch>
       {/* <Button
         type="submit"
