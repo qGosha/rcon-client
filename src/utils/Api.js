@@ -38,5 +38,23 @@ export const Api = {
       .post(`${serverAdress}/api/v1/orders`, payload)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
+  },
+  loadOrders() {
+    return axios
+      .get(`${serverAdress}/api/v1/my_orders`)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  deleteOrder(payload) {
+    return axios
+      .delete(`${serverAdress}/api/v1/orders/${payload}`)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  editClientOrder(payload) {
+    return axios
+      .patch(`${serverAdress}/api/v1/orders/${payload.id}`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
   }
 };

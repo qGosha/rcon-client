@@ -23,6 +23,11 @@ export const OrderForm = ({ match }) => {
         <Redirect exact to={`${match.url}/step1`} from={match.url} />
         <Route path={`${match.url}/step1`} component={BuyOrSell} />
         <Route path={`${match.url}/step2/:type`} component={FormLayout} />
+        <Route path={`${match.url}/edit/step1/:id`} component={BuyOrSell} />
+        <Route
+          path={`${match.url}/edit/step2/:type/:id`}
+          component={FormLayout}
+        />
       </Switch>
     </form>
   );

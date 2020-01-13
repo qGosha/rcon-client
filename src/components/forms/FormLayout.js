@@ -12,8 +12,9 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
+
 import { validate } from "src/utils/validation";
-import { sendClientOrder } from "src/actions/Orders";
+import { sendClientOrder, editClientOrder } from "src/actions/Orders";
 
 import { SimpleErrorsList } from "src/components/shared/Errors";
 
@@ -31,6 +32,9 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  title: {
+    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -38,18 +42,26 @@ const FormLayoutComponent = ({
   user,
   sendClientOrder,
   match,
-  sendClientOrderErrors
+  apiClientOrderErrors,
+  orders,
+  editClientOrder
 }) => {
+  const { id, type } = match.params;
+  const isEditing = /edit/.test(match.url) && id;
+
+  const order =
+    (isEditing && orders.find(order => order.id === parseInt(id))) || {};
+
   const classes = useStyles();
-  const [name, setName] = useState("");
-  const [tel, setTel] = useState("");
-  const [zip, setZip] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [descr, setDescr] = useState("");
-  const [email, setEmail] = useState(user.email);
+  const [street, setStreet] = useState(isEditing ? order.address.street : "");
+  const [tel, setTel] = useState(isEditing ? order.tel : "");
+  const [zip, setZip] = useState(isEditing ? order.address.zip : "");
+  const [state, setState] = useState(isEditing ? order.address.state : "");
+  const [city, setCity] = useState(isEditing ? order.address.city : "");
+  const [descr, setDescr] = useState(isEditing ? order.description : "");
+  const [email, setEmail] = useState(isEditing ? order.email : user.email);
+
   const [errors, setErrors] = useState({
-    // name: false,
     city: false,
     state: false,
     email: false
@@ -60,30 +72,52 @@ const FormLayoutComponent = ({
       const fields = {
         tel,
         description: descr,
-        order_type: match.params.type,
+        order_type: type === "sell" ? 1 : 0,
         address_attributes: {
+          street,
           zip,
           city,
           state
         }
       };
-      sendClientOrder(email === user.email ? fields : { ...fields, email });
+      if (isEditing) {
+        editClientOrder({
+          ...fields,
+          id,
+          email,
+          address_attributes: {
+            ...fields.address_attributes,
+            id: order.address.id
+          }
+        });
+      } else {
+        sendClientOrder({ ...fields, email });
+      }
     }
   };
   return (
     <Paper className={classes.paper}>
-      <Grid container spacing={2} className={classes.root}>
+      <Grid container spacing={2}>
+        {isEditing ? (
+          <Grid item xs={12}>
+            <Typography
+              component="h2"
+              variant="subtitle2"
+              className={classes.title}
+            >
+              Editing your order
+            </Typography>
+          </Grid>
+        ) : null}
         <Grid item xs={12} sm={6}>
           <TextField
-            // required
-            id="name"
-            name="name"
-            label="Your name"
+            id="street"
+            name="street"
+            label="Street (optional)"
             fullWidth
-            autoComplete="name"
-            value={name}
-            error={!!errors.name}
-            onChange={({ target }) => setName(target.value)}
+            autoComplete="address-line-1"
+            value={street}
+            onChange={({ target }) => setStreet(target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -174,7 +208,7 @@ const FormLayoutComponent = ({
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <SimpleErrorsList errors={{ ...errors, ...sendClientOrderErrors }} />
+          <SimpleErrorsList errors={{ ...errors, ...apiClientOrderErrors }} />
         </Grid>
         <Button
           type="submit"
@@ -195,14 +229,18 @@ FormLayoutComponent.propTypes = {
   user: PropTypes.object.isRequired,
   sendClientOrder: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  sendClientOrderErrors: PropTypes.object.isRequired
+  apiClientOrderErrors: PropTypes.object.isRequired,
+  orders: PropTypes.array.isRequired,
+  editClientOrder: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  sendClientOrderErrors: state.orders.sendClientOrderErrors
+  apiClientOrderErrors: state.orders.apiClientOrderErrors,
+  orders: state.orders.items
 });
 
-export const FormLayout = connect(mapStateToProps, { sendClientOrder })(
-  FormLayoutComponent
-);
+export const FormLayout = connect(mapStateToProps, {
+  sendClientOrder,
+  editClientOrder
+})(FormLayoutComponent);

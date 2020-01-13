@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -20,17 +21,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export const BuyOrSell = () => {
+export const BuyOrSell = ({ match }) => {
   const classes = useStyles();
+  const { id } = match.params;
+  const isEditing = /edit/.test(match.url) && id;
   const data = [
     {
       title: "Buy",
-      to: "/dashboard/order/step2/buy"
+      to: isEditing
+        ? `/dashboard/order/edit/step2/buy/${id}`
+        : "/dashboard/order/step2/buy"
     },
-    { title: "Sell", to: "/dashboard/order/step2/sell" }
+    {
+      title: "Sell",
+      to: isEditing
+        ? `/dashboard/order/edit/step2/sell/${id}`
+        : "/dashboard/order/step2/sell"
+    }
   ];
   return (
     <Grid container className={classes.root}>
+      {isEditing ? (
+        <Typography
+          component="h2"
+          variant="subtitle2"
+          className={classes.title}
+        >
+          Editing your order
+        </Typography>
+      ) : null}
       <Typography component="h1" variant="h6" className={classes.title}>
         Do you want to buy or sell a house?
       </Typography>
@@ -46,4 +65,8 @@ export const BuyOrSell = () => {
       </Grid>
     </Grid>
   );
+};
+
+BuyOrSell.propTypes = {
+  match: PropTypes.object.isRequired
 };

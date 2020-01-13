@@ -5,7 +5,7 @@ import { ofType } from "redux-observable";
 import { Api } from "src/utils/Api";
 import { ActionTypes } from "src/actions/Orders";
 
-// import history from "src/utils/history"
+import history from "src/utils/history";
 
 export const sendClientOrder = actions$ =>
   actions$.pipe(
@@ -16,6 +16,7 @@ export const sendClientOrder = actions$ =>
           type: ActionTypes.SEND_CLIENT_ORDER_SUCCESS,
           payload: order
         })),
+        tap(() => history.push("/dashboard/orders")),
         catchError(error => {
           return of({
             type: ActionTypes.SEND_CLIENT_ORDER_ERROR,
@@ -29,8 +30,8 @@ export const sendClientOrder = actions$ =>
 export const loadOrders = actions$ =>
   actions$.pipe(
     ofType(ActionTypes.LOAD_ORDERS),
-    mergeMap(action =>
-      from(Api.loadOrders(action.payload)).pipe(
+    mergeMap(() =>
+      from(Api.loadOrders()).pipe(
         map(orders => ({
           type: ActionTypes.LOAD_ORDERS_SUCCESS,
           payload: orders
@@ -38,6 +39,45 @@ export const loadOrders = actions$ =>
         catchError(error => {
           return of({
             type: ActionTypes.LOAD_ORDERS_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );
+
+export const deleteOrder = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.DELETE_ORDER),
+    mergeMap(action =>
+      from(Api.deleteOrder(action.payload)).pipe(
+        map(() => ({
+          type: ActionTypes.DELETE_ORDER_SUCCESS,
+          payload: action.payload
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.DELETE_ORDER_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );
+
+export const editClientOrder = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.EDIT_CLIENT_ORDER),
+    mergeMap(action =>
+      from(Api.editClientOrder(action.payload)).pipe(
+        map(order => ({
+          type: ActionTypes.EDIT_CLIENT_ORDER_SUCCESS,
+          payload: order
+        })),
+        tap(() => history.push("/dashboard/orders")),
+        catchError(error => {
+          return of({
+            type: ActionTypes.EDIT_CLIENT_ORDER_ERROR,
             payload: error
           });
         })

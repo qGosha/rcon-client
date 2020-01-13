@@ -13,7 +13,7 @@ import Container from "@material-ui/core/Container";
 
 import { DashboardMenu } from "src/components/shared/DashboardMenu";
 import { OrderForm } from "src/components/forms/OrderForm";
-import { Orders } from "src/components/forms/OrderForm";
+import { Orders } from "src/components/shared/Orders";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -25,10 +25,6 @@ const useStyles = makeStyles(theme => ({
 
 const DashboardComponent = ({ logout, match }) => {
   const classes = useStyles();
-
-  // useEffect(() => {
-  //   loadOrders()
-  // }, [])
 
   return (
     <Container maxWidth="md" className={classes.container}>

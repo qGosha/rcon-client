@@ -1,7 +1,12 @@
 import { combineEpics } from "redux-observable";
 
 import { login, checkLoggedIn, signup, logout } from "src/epics/User";
-import { sendClientOrder, loadOrders } from "src/epics/Orders";
+import {
+  sendClientOrder,
+  loadOrders,
+  deleteOrder,
+  editClientOrder
+} from "src/epics/Orders";
 
 export const rootEpic = combineEpics(
   login,
@@ -9,5 +14,7 @@ export const rootEpic = combineEpics(
   signup,
   logout,
   sendClientOrder,
-  loadOrders
+  loadOrders,
+  deleteOrder,
+  editClientOrder
 );

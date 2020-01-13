@@ -34,7 +34,12 @@ const DashboardMenuComponent = ({ user }) => {
         to: "/dashboard/order"
       },
       { title: "Search an agent", icon: SearchIcon, onClick: () => {} },
-      { title: "See my orders", icon: ListIcon, onClick: () => {} }
+      {
+        title: "See my orders",
+        icon: ListIcon,
+        onClick: () => {},
+        to: "/dashboard/orders"
+      }
     ];
   } else {
     data = [
