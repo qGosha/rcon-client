@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
 import Button from "@material-ui/core/Button";
 import PersonIcon from "@material-ui/icons/Person";
 
@@ -25,6 +25,10 @@ const useStyles = makeStyles(theme => ({
   },
   colorWhite: {
     color: "#fff"
+  },
+  loginLogout: {
+    color: "#fff",
+    marginLeft: "auto"
   }
 }));
 
@@ -34,35 +38,37 @@ const AppHeaderComponent = ({ loggedIn, logout }) => {
   return (
     <AppBar position="static" className={classes.root}>
       <Toolbar>
-        {loggedIn && (
+        {loggedIn ? (
           <IconButton
+            onClick={() => history.push(`/dashboard`)}
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
           >
-            <MenuIcon />
+            <HomeIcon />
           </IconButton>
+        ) : (
+          <Link
+            variant="h5"
+            className={classes.title}
+            component={RouterLink}
+            to="/"
+          >
+            Rcon
+          </Link>
         )}
-        <Link
-          variant="h5"
-          className={classes.title}
-          component={RouterLink}
-          to="/"
-        >
-          Rcon
-        </Link>
         {loggedIn ? (
           <>
             <IconButton onClick={() => history.push(`/dashboard/profile`)}>
               <PersonIcon className={classes.colorWhite} />
             </IconButton>
-            <Button className={classes.colorWhite} onClick={logout}>
+            <Button className={classes.loginLogout} onClick={logout}>
               Logout
             </Button>
           </>
         ) : (
-          <ButtonLink className={classes.colorWhite} to="/login">
+          <ButtonLink className={classes.loginLogout} to="/login">
             Login
           </ButtonLink>
         )}

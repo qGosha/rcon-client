@@ -65,10 +65,12 @@ export const Api = {
       .catch(error => Promise.reject(error.response.data));
   },
   fetchRealtorsList(payload) {
+    let url = `${serverAdress}/api/v1/list_realtors/?page=${payload.page}&per_page=${payload.per_page}`;
+    if (payload.state) {
+      url = `${url}&state=${payload.state}`;
+    }
     return axios
-      .get(
-        `${serverAdress}/api/v1/list_realtors/?page=${payload.page}&per_page=${payload.per_page}`
-      )
+      .get(url)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
   },

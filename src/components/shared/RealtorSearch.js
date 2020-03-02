@@ -13,6 +13,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
+import { states } from "src/components/constants/states";
 
 import { Realtor } from "src/components/shared/Realtor";
 import {
@@ -20,6 +26,8 @@ import {
   updateRating,
   createRating
 } from "src/actions/Realtors";
+
+const SELECT_ALL = "Select all";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -46,28 +54,58 @@ const RealtorSearchComponent = ({
   const [offset, setOffset] = useState(0);
   const [isConfirmationOpen, toggleConfirmationOpen] = useState(false);
 
+  const [state, setState] = useState(SELECT_ALL);
+
+  useEffect(() => {
+    setPageNum(1);
+    setOffset(0);
+  }, [state]);
+
   useEffect(() => {
     fetchRealtorsList({
       page: pageNum,
-      per_page: 10
+      per_page: 10,
+      state: state === SELECT_ALL ? null : state
     });
-  }, [pageNum, fetchRealtorsList]);
+  }, [pageNum, fetchRealtorsList, state]);
 
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <Grid container spacing={1} className={classes.root}>
-      <Pagination
-        limit={10}
-        offset={offset}
-        total={realtorsCount}
-        size={isMobile ? "small" : "medium"}
-        onClick={(e, offset, pageNum) => {
-          setPageNum(pageNum);
-          setOffset(offset);
-        }}
-        className={classes.paginator}
-      />
+      <Grid item xs={12} lg={6}>
+        <Pagination
+          limit={10}
+          offset={offset}
+          total={realtorsCount}
+          size={isMobile ? "small" : "medium"}
+          onClick={(e, offset, pageNum) => {
+            setPageNum(pageNum);
+            setOffset(offset);
+          }}
+          className={classes.paginator}
+        />
+      </Grid>
+      <Grid item xs={12} lg={6}>
+        <FormControl fullWidth>
+          <InputLabel required id="state-label">
+            Filter by state
+          </InputLabel>
+          <Select
+            labelId="state-label"
+            id="state-id"
+            value={state}
+            style={{ minWidth: "60px" }}
+            onChange={({ target }) => setState(target.value)}
+          >
+            {[SELECT_ALL, ...states].map(state => (
+              <MenuItem key={state} value={state}>
+                {state}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
       <CssBaseline />
       {!loading &&
         realtors.map(realtor => (
@@ -117,6 +155,10 @@ RealtorSearchComponent.propTypes = {
   updateRating: PropTypes.func.isRequired,
   ratedByMeIds: PropTypes.array.isRequired,
   createRating: PropTypes.func.isRequired
+};
+
+RealtorSearchComponent.defaultProps = {
+  realtors: []
 };
 
 const mapStateToProps = state => ({
