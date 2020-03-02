@@ -10,7 +10,10 @@ export const ActionTypes = {
   SIGNUP_ERROR: "SIGNUP_ERROR",
   LOGOUT: "LOGOUT",
   LOGOUT_SUCCESS: "LOGOUT_SUCCESS",
-  LOGOUT_ERROR: "LOGOUT_ERROR"
+  LOGOUT_ERROR: "LOGOUT_ERROR",
+  UPDATE_USER: "UPDATE_USER",
+  UPDATE_USER_SUCCESS: "UPDATE_USER_SUCCESS",
+  UPDATE_USER_ERROR: "UPDATE_USER_ERROR"
 };
 
 export const login = payload => ({
@@ -29,4 +32,9 @@ export const signup = payload => ({
 
 export const logout = () => ({
   type: ActionTypes.LOGOUT
+});
+
+export const updateUser = payload => ({
+  type: ActionTypes.UPDATE_USER,
+  payload
 });

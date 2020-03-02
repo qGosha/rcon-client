@@ -6,6 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
 import { MenuCard } from "src/components/shared/MenuCard";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+
+import history from "src/utils/history";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,30 +44,35 @@ export const BuyOrSell = ({ match }) => {
     }
   ];
   return (
-    <Grid container className={classes.root}>
-      {isEditing ? (
-        <Typography
-          component="h2"
-          variant="subtitle2"
-          className={classes.title}
-        >
-          Editing your order
+    <>
+      <IconButton onClick={() => history.goBack()}>
+        <ArrowBackIcon />
+      </IconButton>
+      <Grid container className={classes.root}>
+        {isEditing ? (
+          <Typography
+            component="h2"
+            variant="subtitle2"
+            className={classes.title}
+          >
+            Editing your order
+          </Typography>
+        ) : null}
+        <Typography component="h1" variant="h6" className={classes.title}>
+          Do you want to buy or sell a house?
         </Typography>
-      ) : null}
-      <Typography component="h1" variant="h6" className={classes.title}>
-        Do you want to buy or sell a house?
-      </Typography>
-      <Grid container spacing={5} className={classes.innerContainer}>
-        {data.map((cardData, index) => (
-          <MenuCard
-            key={index}
-            title={cardData.title}
-            index={index + 1}
-            to={cardData.to}
-          />
-        ))}
+        <Grid container spacing={5} className={classes.innerContainer}>
+          {data.map((cardData, index) => (
+            <MenuCard
+              key={index}
+              title={cardData.title}
+              index={index + 1}
+              to={cardData.to}
+            />
+          ))}
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 };
 

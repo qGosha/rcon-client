@@ -11,6 +11,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
+import PersonIcon from "@material-ui/icons/Person";
+
+import history from "src/utils/history";
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -20,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     color: "#fff"
   },
-  link: {
+  colorWhite: {
     color: "#fff"
   }
 }));
@@ -50,11 +53,16 @@ const AppHeaderComponent = ({ loggedIn, logout }) => {
           Rcon
         </Link>
         {loggedIn ? (
-          <Button className={classes.link} onClick={logout}>
-            Logout
-          </Button>
+          <>
+            <IconButton onClick={() => history.push(`/dashboard/profile`)}>
+              <PersonIcon className={classes.colorWhite} />
+            </IconButton>
+            <Button className={classes.colorWhite} onClick={logout}>
+              Logout
+            </Button>
+          </>
         ) : (
-          <ButtonLink className={classes.link} to="/login">
+          <ButtonLink className={classes.colorWhite} to="/login">
             Login
           </ButtonLink>
         )}

@@ -82,3 +82,22 @@ export const logout = actions$ =>
       )
     )
   );
+
+export const updateUser = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.UPDATE_USER),
+    mergeMap(action =>
+      from(Api.updateUser(action.payload)).pipe(
+        map(user => ({
+          type: ActionTypes.UPDATE_USER_SUCCESS,
+          payload: user
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.UPDATE_USER_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );

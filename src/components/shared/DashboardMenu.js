@@ -8,11 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MenuCard } from "src/components/shared/MenuCard";
-
-export const userRoles = {
-  CLIENT: "client",
-  REALTOR: "realtor"
-};
+import { userRoles } from "src/components/constants/roles";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,14 +26,12 @@ const DashboardMenuComponent = ({ user }) => {
       {
         title: "Fill out the form",
         icon: FormatIndentIncreaseIcon,
-        onClick: () => {},
         to: "/dashboard/order"
       },
-      { title: "Search an agent", icon: SearchIcon, onClick: () => {} },
+      { title: "Search an agent", icon: SearchIcon, to: "/dashboard/realtors" },
       {
         title: "See my orders",
         icon: ListIcon,
-        onClick: () => {},
         to: "/dashboard/orders"
       }
     ];
@@ -48,7 +42,7 @@ const DashboardMenuComponent = ({ user }) => {
         icon: FormatIndentIncreaseIcon,
         onClick: () => {}
       },
-      { title: "Search an agent", icon: SearchIcon, onClick: () => {} }
+      { title: "Search an agent", icon: SearchIcon, to: "/dashboard/realtors" }
     ];
   }
   return (

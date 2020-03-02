@@ -27,6 +27,13 @@ export const Api = {
       .catch(error => Promise.reject(error.response.data));
   },
 
+  updateUser(payload) {
+    return axios
+      .patch(`${serverAdress}/api/v1/users/${payload.id}`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+
   logout() {
     return axios
       .post(`${serverAdress}/api/v1/logout`)
@@ -54,6 +61,26 @@ export const Api = {
   editClientOrder(payload) {
     return axios
       .patch(`${serverAdress}/api/v1/orders/${payload.id}`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  fetchRealtorsList(payload) {
+    return axios
+      .get(
+        `${serverAdress}/api/v1/list_realtors/?page=${payload.page}&per_page=${payload.per_page}`
+      )
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  updateRating(payload) {
+    return axios
+      .patch(`${serverAdress}/api/v1/realtor_ratings/${payload.id}`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  createRating(payload) {
+    return axios
+      .post(`${serverAdress}/api/v1/realtor_ratings`, payload)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
   }

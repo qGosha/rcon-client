@@ -74,8 +74,8 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
         password,
         role,
         password_confirmation: confirmPassword,
-        client_attributes: { first_name: firstName },
-        realtor_attributes: { first_name: firstName, last_name: lastName }
+        first_name: firstName,
+        last_name: lastName
       });
     }
   };
@@ -214,7 +214,7 @@ const SignupComponent = ({ signup, authOrSignupLoading, signupErrors }) => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link component={RouterLink} variant="body2" to="/">
+              <Link component={RouterLink} variant="body2" to="/login">
                 Already have an account? Sign in
               </Link>
             </Grid>

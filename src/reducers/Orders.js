@@ -1,4 +1,5 @@
 import { ActionTypes } from "src/actions/Orders";
+import { ActionTypes as AuthActionTypes } from "src/actions/User";
 
 const {
   SEND_CLIENT_ORDER_SUCCESS,
@@ -10,6 +11,7 @@ const {
   EDIT_CLIENT_ORDER_SUCCESS,
   EDIT_CLIENT_ORDER_ERROR
 } = ActionTypes;
+const { LOGOUT } = AuthActionTypes;
 
 export const defaultState = {
   items: [],
@@ -56,6 +58,8 @@ export const orders = (state = defaultState, action) => {
         ...state,
         items: state.items.filter(order => order.id !== payload)
       };
+    case LOGOUT:
+      return defaultState;
     default:
       return state;
   }
