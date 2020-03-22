@@ -7,10 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
-import Select from "@material-ui/core/Select";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -19,8 +15,7 @@ import { validate } from "src/utils/validation";
 import { sendClientOrder, editClientOrder } from "src/actions/Orders";
 
 import { SimpleErrorsList } from "src/components/shared/Errors";
-
-import { states } from "src/components/constants/states";
+import { AddressForm } from "src/components/forms/AddressForm";
 
 import history from "src/utils/history";
 
@@ -42,7 +37,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const FormLayoutComponent = ({
+const OrderFormLayoutComponent = ({
   user,
   sendClientOrder,
   match,
@@ -70,6 +65,20 @@ const FormLayoutComponent = ({
     state: false,
     email: false
   });
+  const addressFormProps = {
+    setStreet,
+    setTel,
+    setZip,
+    setState,
+    setCity,
+    street,
+    city,
+    tel,
+    zip,
+    state,
+    errors
+  };
+
   const submitOrder = e => {
     e.preventDefault();
     if (!validate(Object.keys(errors), { city, state, email }, setErrors)) {
@@ -117,73 +126,7 @@ const FormLayoutComponent = ({
               </Typography>
             </Grid>
           ) : null}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="street"
-              name="street"
-              label="Street (optional)"
-              fullWidth
-              autoComplete="address-line-1"
-              value={street}
-              onChange={({ target }) => setStreet(target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              type="tel"
-              id="tel"
-              name="tel"
-              label="Your phone (optional)"
-              fullWidth
-              autoComplete="tel"
-              value={tel}
-              onChange={({ target }) => setTel(target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              required
-              id="city"
-              name="city"
-              label="City"
-              fullWidth
-              autoComplete="address-level2"
-              value={city}
-              error={!!errors.city}
-              onChange={({ target }) => setCity(target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <FormControl fullWidth error={!!errors.state}>
-              <InputLabel required id="state-label">
-                State
-              </InputLabel>
-              <Select
-                labelId="state-label"
-                id="state-id"
-                value={state}
-                style={{ minWidth: "60px" }}
-                onChange={({ target }) => setState(target.value)}
-              >
-                {states.map(state => (
-                  <MenuItem key={state} value={state}>
-                    {state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextField
-              id="zip"
-              name="zip"
-              label="Zip / Postal code"
-              fullWidth
-              autoComplete="postal-code"
-              value={zip}
-              onChange={({ target }) => setZip(target.value)}
-            />
-          </Grid>
+          <AddressForm {...addressFormProps} />
           <Grid item xs={12}>
             <TextField
               id="description"
@@ -234,7 +177,7 @@ const FormLayoutComponent = ({
   );
 };
 
-FormLayoutComponent.propTypes = {
+OrderFormLayoutComponent.propTypes = {
   user: PropTypes.object.isRequired,
   sendClientOrder: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
@@ -249,7 +192,7 @@ const mapStateToProps = state => ({
   orders: state.orders.items
 });
 
-export const FormLayout = connect(mapStateToProps, {
+export const OrderFormLayout = connect(mapStateToProps, {
   sendClientOrder,
   editClientOrder
-})(FormLayoutComponent);
+})(OrderFormLayoutComponent);

@@ -14,6 +14,7 @@ import { OrderForm } from "src/components/forms/OrderForm";
 import { Orders } from "src/components/shared/Orders";
 import { Profile } from "src/components/forms/Profile";
 import { RealtorSearch } from "src/components/shared/RealtorSearch";
+import { RealtorProfileForm } from "src/components/forms/RealtorProfileForm";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -34,6 +35,10 @@ const DashboardComponent = ({ match }) => {
         <Route path={`${match.url}/orders`} component={Orders} />
         <Route path={`${match.url}/profile`} component={Profile} />
         <Route path={`${match.url}/realtors`} component={RealtorSearch} />
+        <Route
+          path={`${match.url}/realtor_profile`}
+          component={RealtorProfileForm}
+        />
       </Switch>
     </Container>
   );

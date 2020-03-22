@@ -1,5 +1,6 @@
 import { ActionTypes } from "src/actions/User";
 import { ActionTypes as AuthActionTypes } from "src/actions/User";
+import { ActionTypes as RealtorProfilesActionTypes } from "src/actions/RealtorProfiles";
 
 const {
   LOGIN_SUCCESS,
@@ -9,6 +10,12 @@ const {
   UPDATE_USER_ERROR
 } = ActionTypes;
 const { LOGOUT } = AuthActionTypes;
+const {
+  SEND_REALTOR_PROFILE_SUCCESS,
+  EDIT_REALTOR_PROFILE_SUCCESS,
+  SEND_REALTOR_PROFILE_ERROR,
+  EDIT_REALTOR_PROFILE_ERROR
+} = RealtorProfilesActionTypes;
 
 export const defaultState = {
   user: {},
@@ -25,9 +32,18 @@ export const user = (state = defaultState, action) => {
     case UPDATE_USER_SUCCESS:
       return { ...state, user: payload, errors: {} };
     case UPDATE_USER_ERROR:
+    case SEND_REALTOR_PROFILE_ERROR:
+    case EDIT_REALTOR_PROFILE_ERROR:
       return { ...state, errors: payload };
     case LOGOUT:
       return defaultState;
+    case SEND_REALTOR_PROFILE_SUCCESS:
+    case EDIT_REALTOR_PROFILE_SUCCESS:
+      return {
+        ...state,
+        user: { ...state.user, realtor_profile: payload },
+        errors: {}
+      };
     default:
       return state;
   }

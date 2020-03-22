@@ -85,5 +85,17 @@ export const Api = {
       .post(`${serverAdress}/api/v1/realtor_ratings`, payload)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
+  },
+  sendRealtorProfile(payload) {
+    return axios
+      .post(`${serverAdress}/api/v1/realtor_profiles/`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  editRealtorProfile(payload) {
+    return axios
+      .patch(`${serverAdress}/api/v1/realtor_profiles/${payload.id}`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
   }
 };

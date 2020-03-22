@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import { BuyOrSell } from "src/components/forms/BuyOrSell";
-import { FormLayout } from "src/components/forms/FormLayout";
+import { OrderFormLayout } from "src/components/forms/OrderFormLayout";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -22,11 +22,11 @@ export const OrderForm = ({ match }) => {
       <Switch>
         <Redirect exact to={`${match.url}/step1`} from={match.url} />
         <Route path={`${match.url}/step1`} component={BuyOrSell} />
-        <Route path={`${match.url}/step2/:type`} component={FormLayout} />
+        <Route path={`${match.url}/step2/:type`} component={OrderFormLayout} />
         <Route path={`${match.url}/edit/step1/:id`} component={BuyOrSell} />
         <Route
           path={`${match.url}/edit/step2/:type/:id`}
-          component={FormLayout}
+          component={OrderFormLayout}
         />
       </Switch>
     </form>

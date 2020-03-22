@@ -18,6 +18,10 @@ import {
   updateRating,
   createRating
 } from "src/epics/Realtors";
+import {
+  sendRealtorProfile,
+  editRealtorProfile
+} from "src/epics/RealtorProfiles";
 
 export const rootEpic = combineEpics(
   login,
@@ -31,5 +35,7 @@ export const rootEpic = combineEpics(
   updateUser,
   fetchRealtorsList,
   updateRating,
-  createRating
+  createRating,
+  sendRealtorProfile,
+  editRealtorProfile
 );
