@@ -11,7 +11,7 @@ const {
   EDIT_CLIENT_ORDER_SUCCESS,
   EDIT_CLIENT_ORDER_ERROR
 } = ActionTypes;
-const { LOGOUT } = AuthActionTypes;
+const { LOGOUT, DELETE_USER_SUCCESS } = AuthActionTypes;
 
 export const defaultState = {
   items: [],
@@ -59,6 +59,7 @@ export const orders = (state = defaultState, action) => {
         items: state.items.filter(order => order.id !== payload)
       };
     case LOGOUT:
+    case DELETE_USER_SUCCESS:
       return defaultState;
     default:
       return state;

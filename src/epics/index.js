@@ -5,7 +5,8 @@ import {
   checkLoggedIn,
   signup,
   logout,
-  updateUser
+  updateUser,
+  deleteUser
 } from "src/epics/User";
 import {
   sendClientOrder,
@@ -23,6 +24,11 @@ import {
   editRealtorProfile
 } from "src/epics/RealtorProfiles";
 
+import {
+  fetchClientOrdersList,
+  loadRespondedOrdersList
+} from "src/epics/Orderslist";
+
 export const rootEpic = combineEpics(
   login,
   checkLoggedIn,
@@ -37,5 +43,8 @@ export const rootEpic = combineEpics(
   updateRating,
   createRating,
   sendRealtorProfile,
-  editRealtorProfile
+  editRealtorProfile,
+  deleteUser,
+  fetchClientOrdersList,
+  loadRespondedOrdersList
 );

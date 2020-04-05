@@ -12,7 +12,7 @@ import { Dashboard } from "src/components/dashboard/Dashboard";
 import { IntroPage } from "src/components/dashboard/IntroPage";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
+const App = ({ checkLoggedIn, loggedIn, initialLoading, user }) => {
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -56,7 +56,7 @@ const App = ({ checkLoggedIn, loggedIn, initialLoading }) => {
     <ThemeProvider theme={theme}>
       <Router history={history}>
         <div style={styles.root}>
-          <AppHeader loggedIn={loggedIn} />
+          <AppHeader loggedIn={loggedIn} user={user} />
           <Switch>
             <Route
               exact
@@ -92,13 +92,15 @@ const rootStyles = () => ({
 
 const mapStateToProps = state => ({
   loggedIn: state.auth.loggedIn,
-  initialLoading: state.auth.initialLoading
+  initialLoading: state.auth.initialLoading,
+  user: state.user.user
 });
 
 App.propTypes = {
   checkLoggedIn: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
-  initialLoading: PropTypes.bool.isRequired
+  initialLoading: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, { checkLoggedIn })(App);

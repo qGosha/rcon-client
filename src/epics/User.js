@@ -101,3 +101,21 @@ export const updateUser = actions$ =>
       )
     )
   );
+
+export const deleteUser = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.DELETE_USER),
+    mergeMap(action =>
+      from(Api.deleteUser(action.payload)).pipe(
+        map(() => ({
+          type: ActionTypes.DELETE_USER_SUCCESS
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.DELETE_USER_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );

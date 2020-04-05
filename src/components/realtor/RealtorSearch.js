@@ -2,43 +2,22 @@ import { connect } from "react-redux";
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Grid from "@material-ui/core/Grid";
-import Pagination from "material-ui-flat-pagination";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 
-import { states } from "src/components/constants/states";
-
-import { Realtor } from "src/components/shared/Realtor";
+import { Realtor } from "src/components/realtor/Realtor";
 import {
   fetchRealtorsList,
   updateRating,
   createRating
 } from "src/actions/Realtors";
-
-const SELECT_ALL = "Select all";
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    justifyContent: "flex-start"
-  },
-  paginator: {
-    textAlign: "center",
-    width: "100%",
-    marginBottom: theme.spacing(2)
-  }
-}));
+import { SearchWithStateSelectForm } from "src/components/shared/forms/SearchWithStateSelectForm";
+import { SELECT_ALL } from "src/components/constants/states";
 
 const RealtorSearchComponent = ({
   realtors,
@@ -49,7 +28,6 @@ const RealtorSearchComponent = ({
   ratedByMeIds,
   createRating
 }) => {
-  const classes = useStyles();
   const [pageNum, setPageNum] = useState(1);
   const [offset, setOffset] = useState(0);
   const [isConfirmationOpen, toggleConfirmationOpen] = useState(false);
@@ -69,44 +47,16 @@ const RealtorSearchComponent = ({
     });
   }, [pageNum, fetchRealtorsList, state]);
 
-  const isMobile = useMediaQuery("(max-width: 600px)");
-
   return (
-    <Grid container spacing={1} className={classes.root}>
-      <Grid item xs={12} lg={6}>
-        <Pagination
-          limit={10}
-          offset={offset}
-          total={realtorsCount}
-          size={isMobile ? "small" : "medium"}
-          onClick={(e, offset, pageNum) => {
-            setPageNum(pageNum);
-            setOffset(offset);
-          }}
-          className={classes.paginator}
-        />
-      </Grid>
-      <Grid item xs={12} lg={6}>
-        <FormControl fullWidth>
-          <InputLabel required id="state-label">
-            Filter by state
-          </InputLabel>
-          <Select
-            labelId="state-label"
-            id="state-id"
-            value={state}
-            style={{ minWidth: "60px" }}
-            onChange={({ target }) => setState(target.value)}
-          >
-            {[SELECT_ALL, ...states].map(state => (
-              <MenuItem key={state} value={state}>
-                {state}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-      <CssBaseline />
+    <Grid container spacing={1} styles={{ justifyContent: "flex-start" }}>
+      <SearchWithStateSelectForm
+        offset={offset}
+        total={realtorsCount}
+        setPageNum={setPageNum}
+        setOffset={setOffset}
+        setState={setState}
+        state={state}
+      />
       {!loading &&
         realtors.map(realtor => (
           <Realtor

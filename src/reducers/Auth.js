@@ -10,7 +10,8 @@ const {
   LOGOUT,
   SIGNUP,
   SIGNUP_SUCCESS,
-  SIGNUP_ERROR
+  SIGNUP_ERROR,
+  DELETE_USER_SUCCESS
 } = ActionTypes;
 
 export const defaultState = {
@@ -59,6 +60,7 @@ export const auth = (state = defaultState, action) => {
         authOrSignupLoading: false
       };
     case LOGOUT:
+    case DELETE_USER_SUCCESS:
       return defaultState;
     default:
       return state;

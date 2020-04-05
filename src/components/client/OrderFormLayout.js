@@ -15,7 +15,7 @@ import { validate } from "src/utils/validation";
 import { sendClientOrder, editClientOrder } from "src/actions/Orders";
 
 import { SimpleErrorsList } from "src/components/shared/Errors";
-import { AddressForm } from "src/components/forms/AddressForm";
+import { AddressForm } from "src/components/shared/forms/AddressForm";
 
 import history from "src/utils/history";
 
@@ -52,12 +52,14 @@ const OrderFormLayoutComponent = ({
     (isEditing && orders.find(order => order.id === parseInt(id))) || {};
 
   const classes = useStyles();
-  const [street, setStreet] = useState(isEditing ? order.address.street : "");
-  const [tel, setTel] = useState(isEditing ? order.tel : "");
-  const [zip, setZip] = useState(isEditing ? order.address.zip : "");
-  const [state, setState] = useState(isEditing ? order.address.state : "");
-  const [city, setCity] = useState(isEditing ? order.address.city : "");
-  const [descr, setDescr] = useState(isEditing ? order.description : "");
+  const [street, setStreet] = useState(
+    (isEditing && order.address.street) || ""
+  );
+  const [tel, setTel] = useState((isEditing && order.tel) || "");
+  const [zip, setZip] = useState((isEditing && order.address.zip) || "");
+  const [state, setState] = useState((isEditing && order.address.state) || "");
+  const [city, setCity] = useState((isEditing && order.address.city) || "");
+  const [descr, setDescr] = useState((isEditing && order.description) || "");
   const [email, setEmail] = useState(isEditing ? order.email : user.email);
 
   const [errors, setErrors] = useState({

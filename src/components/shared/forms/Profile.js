@@ -8,10 +8,14 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { validate } from "src/utils/validation";
 import { SimpleErrorsList } from "src/components/shared/Errors";
-import { updateUser } from "src/actions/User";
+import { updateUser, deleteUser } from "src/actions/User";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -26,12 +30,16 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 1, 2)
   },
+  delete: {
+    backgroundColor: "#dc004e",
+    margin: theme.spacing(3, 1, 2)
+  },
   title: {
     marginBottom: theme.spacing(2)
   },
   buttonsBlock: {
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "space-between"
   },
   editButton: {
     position: "absolute",
@@ -51,7 +59,7 @@ const defaultEditFields = {
   confirmPassword: false
 };
 
-const ProfileComponent = ({ user, userErrors, updateUser }) => {
+const ProfileComponent = ({ user, userErrors, updateUser, deleteUser }) => {
   const [email, setEmail] = useState(user.email);
   const [firstName, setFirstName] = useState(user.first_name);
   const [lastName, setLastName] = useState(user.last_name);
@@ -63,6 +71,8 @@ const ProfileComponent = ({ user, userErrors, updateUser }) => {
     email: false,
     password: false
   });
+  const [isConfirmationOpen, toggleConfirmationOpen] = useState(false);
+
   const classes = useStyles();
   const submitForm = e => {
     e.preventDefault();
@@ -209,6 +219,13 @@ const ProfileComponent = ({ user, userErrors, updateUser }) => {
         </Grid>
         <Grid item xs={12} className={classes.buttonsBlock}>
           <Button
+            variant="contained"
+            className={classes.delete}
+            onClick={() => toggleConfirmationOpen(true)}
+          >
+            Delete
+          </Button>
+          <Button
             type="submit"
             variant="contained"
             color="primary"
@@ -216,10 +233,38 @@ const ProfileComponent = ({ user, userErrors, updateUser }) => {
             onClick={submitForm}
             disabled={Object.keys(editFields).every(f => !editFields[f])}
           >
-            Submit
+            Save
           </Button>
         </Grid>
       </Grid>
+      <Dialog
+        open={isConfirmationOpen}
+        onClose={() => toggleConfirmationOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Confirmation"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Do you want to delete your account?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => toggleConfirmationOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              deleteUser(user.id);
+              toggleConfirmationOpen(false);
+            }}
+            color="primary"
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Paper>
   );
 };
@@ -227,7 +272,8 @@ const ProfileComponent = ({ user, userErrors, updateUser }) => {
 ProfileComponent.propTypes = {
   user: PropTypes.object.isRequired,
   userErrors: PropTypes.object,
-  updateUser: PropTypes.func.isRequired
+  updateUser: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -235,6 +281,6 @@ const mapStateToProps = state => ({
   userErrors: state.user.errors
 });
 
-export const Profile = connect(mapStateToProps, { updateUser })(
+export const Profile = connect(mapStateToProps, { updateUser, deleteUser })(
   ProfileComponent
 );

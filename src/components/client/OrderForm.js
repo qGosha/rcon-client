@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import { BuyOrSell } from "src/components/forms/BuyOrSell";
-import { OrderFormLayout } from "src/components/forms/OrderFormLayout";
+import { BuyOrSell } from "src/components/client/BuyOrSell";
+import { OrderFormLayout } from "src/components/client/OrderFormLayout";
 
 const useStyles = makeStyles(theme => ({
   form: {

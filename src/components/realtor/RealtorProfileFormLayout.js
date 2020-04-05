@@ -10,8 +10,10 @@ import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import history from "src/utils/history";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
+import history from "src/utils/history";
+import { serverAddress } from "src/utils/Api";
 import { validate } from "src/utils/validation";
 import {
   sendRealtorProfile,
@@ -19,7 +21,7 @@ import {
 } from "src/actions/RealtorProfiles";
 
 import { SimpleErrorsList } from "src/components/shared/Errors";
-import { AddressForm } from "src/components/forms/AddressForm";
+import { AddressForm } from "src/components/shared/forms/AddressForm";
 const standartImage = require("src/images/square-image.png");
 
 const useStyles = makeStyles(theme => ({
@@ -41,6 +43,17 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     height: theme.spacing(14),
     width: theme.spacing(14)
+  },
+  avatarBlock: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column"
+  },
+  avatarLabel: {
+    marginTop: theme.spacing(1)
+  },
+  loading: {
+    color: "green"
   }
 }));
 
@@ -49,7 +62,8 @@ const RealtorProfileFormLayoutComponent = ({
   match,
   apiRealtorProfilesErrors,
   sendRealtorProfile,
-  editRealtorProfile
+  editRealtorProfile,
+  loading
 }) => {
   const isEditing = /edit/.test(match.url);
 
@@ -59,30 +73,22 @@ const RealtorProfileFormLayoutComponent = ({
     }
   }, [user, isEditing]);
 
-  const address = isEditing && user.realtor_profile.address;
+  const address = (isEditing && user.realtor_profile.address) || {};
 
   const classes = useStyles();
-  const [street, setStreet] = useState(isEditing ? address.street : "");
-  const [tel, setTel] = useState(isEditing ? user.realtor_profile.tel : "");
-  const [zip, setZip] = useState(isEditing ? address.zip : "");
-  const [state, setState] = useState(isEditing ? address.state : "");
-  const [city, setCity] = useState(isEditing ? address.city : "");
-  const [bio, setBio] = useState(isEditing ? user.realtor_profile.bio : "");
+  const [street, setStreet] = useState((isEditing && address.street) || "");
+  const [tel, setTel] = useState((isEditing && user.realtor_profile.tel) || "");
+  const [zip, setZip] = useState((isEditing && address.zip) || "");
+  const [state, setState] = useState((isEditing && address.state) || "");
+  const [city, setCity] = useState((isEditing && address.city) || "");
+  const [bio, setBio] = useState((isEditing && user.realtor_profile.bio) || "");
   const [email, setEmail] = useState(
     isEditing ? user.realtor_profile.email : user.email
   );
-  const [avatar, setAvatar] = useState(
-    isEditing ? user.realtor_profile.avatar : standartImage
-  );
+  const [avatar, setAvatar] = useState(null);
 
   const handleCapture = ({ target }) => {
-    // const fileReader = new FileReader();
-
-    // fileReader.readAsDataURL(target.files[0]);
-    // fileReader.onload = e => setAvatar(e.target.result)
-    const formData = new FormData();
-    formData.append("avatar", target.files[0]);
-    setAvatar(formData);
+    setAvatar(target.files[0]);
   };
   const [errors, setErrors] = useState({
     city: false,
@@ -103,6 +109,19 @@ const RealtorProfileFormLayoutComponent = ({
     errors
   };
 
+  const createFrom = fields => {
+    const formData = new FormData();
+    Object.keys(fields).forEach(key => {
+      formData.append(
+        key,
+        typeof fields[key] === "object" && key !== "avatar"
+          ? JSON.stringify(fields[key])
+          : fields[key]
+      );
+    });
+    return formData;
+  };
+
   const submitRealtorProfile = e => {
     e.preventDefault();
     if (!validate(Object.keys(errors), { city, state, email }, setErrors)) {
@@ -117,18 +136,26 @@ const RealtorProfileFormLayoutComponent = ({
         }
       };
       if (isEditing) {
-        editRealtorProfile({
-          ...fields,
-          id: user.realtor_profile.id,
-          email,
-          avatar,
-          address_attributes: {
-            ...fields.address_attributes,
-            id: address.id
-          }
-        });
+        editRealtorProfile(
+          createFrom({
+            ...fields,
+            id: user.realtor_profile.id,
+            email,
+            address_attributes: {
+              ...fields.address_attributes,
+              id: address.id
+            },
+            ...(avatar && { avatar })
+          })
+        );
       } else {
-        sendRealtorProfile({ ...fields, email, avatar });
+        sendRealtorProfile(
+          createFrom({
+            ...fields,
+            email,
+            ...(avatar && { avatar })
+          })
+        );
       }
     }
   };
@@ -189,12 +216,16 @@ const RealtorProfileFormLayoutComponent = ({
               <em>*We will not disclose your email address</em>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={4} className={classes.avatarBlock}>
             <Avatar
               className={classes.avatar}
               variant="square"
               alt="Avatar"
-              src={avatar}
+              src={
+                isEditing
+                  ? `${serverAddress}${user.realtor_profile.avatar}`
+                  : standartImage
+              }
             />
             <input
               accept="image/*"
@@ -203,12 +234,13 @@ const RealtorProfileFormLayoutComponent = ({
               type="file"
               onChange={handleCapture}
             />
-            <label htmlFor="raised-button-file">
+            <label className={classes.avatarLabel} htmlFor="raised-button-file">
               <Button variant="outlined" component="span">
                 <CloudUploadIcon />
                 {isEditing ? "Change" : "Upload"}
               </Button>
             </label>
+            {avatar && <p>{avatar.name}</p>}
           </Grid>
           <Grid item xs={12}>
             <SimpleErrorsList
@@ -222,8 +254,13 @@ const RealtorProfileFormLayoutComponent = ({
             color="primary"
             className={classes.submit}
             onClick={submitRealtorProfile}
+            disabled={loading}
           >
-            Submit
+            {loading ? (
+              <CircularProgress className={classes.loading} size={24} />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </Grid>
       </Paper>
@@ -236,12 +273,14 @@ RealtorProfileFormLayoutComponent.propTypes = {
   sendRealtorProfile: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   apiRealtorProfilesErrors: PropTypes.object.isRequired,
-  editRealtorProfile: PropTypes.func.isRequired
+  editRealtorProfile: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   user: state.user.user,
-  apiRealtorProfilesErrors: state.user.errors
+  apiRealtorProfilesErrors: state.user.errors,
+  loading: state.user.loading
 });
 
 export const RealtorProfileFormLayout = connect(mapStateToProps, {

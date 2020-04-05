@@ -10,11 +10,13 @@ import { logout } from "src/actions/User";
 import Container from "@material-ui/core/Container";
 
 import { DashboardMenu } from "src/components/shared/DashboardMenu";
-import { OrderForm } from "src/components/forms/OrderForm";
-import { Orders } from "src/components/shared/Orders";
-import { Profile } from "src/components/forms/Profile";
-import { RealtorSearch } from "src/components/shared/RealtorSearch";
-import { RealtorProfileForm } from "src/components/forms/RealtorProfileForm";
+import { OrderForm } from "src/components/client/OrderForm";
+import { Orders } from "src/components/client/Orders";
+import { Profile } from "src/components/shared/forms/Profile";
+import { RealtorSearch } from "src/components/realtor/RealtorSearch";
+import { ClientOrdersSearch } from "src/components/realtor/ClientOrdersSearch";
+import { RealtorProfileForm } from "src/components/realtor/RealtorProfileForm";
+import { RespondedOrders } from "src/components/realtor/RespondedOrders";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,6 +40,14 @@ const DashboardComponent = ({ match }) => {
         <Route
           path={`${match.url}/realtor_profile`}
           component={RealtorProfileForm}
+        />
+        <Route
+          path={`${match.url}/client_orders`}
+          component={ClientOrdersSearch}
+        />
+        <Route
+          path={`${match.url}/responded_orders`}
+          component={RespondedOrders}
         />
       </Switch>
     </Container>

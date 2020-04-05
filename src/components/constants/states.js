@@ -59,3 +59,5 @@ export const states = [
   "WI",
   "WY"
 ];
+
+export const SELECT_ALL = "Select all";

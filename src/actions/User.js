@@ -13,7 +13,10 @@ export const ActionTypes = {
   LOGOUT_ERROR: "LOGOUT_ERROR",
   UPDATE_USER: "UPDATE_USER",
   UPDATE_USER_SUCCESS: "UPDATE_USER_SUCCESS",
-  UPDATE_USER_ERROR: "UPDATE_USER_ERROR"
+  UPDATE_USER_ERROR: "UPDATE_USER_ERROR",
+  DELETE_USER: "DELETE_USER",
+  DELETE_USER_SUCCESS: "DELETE_USER_SUCCESS",
+  DELETE_USER_ERROR: "DELETE_USER_ERROR"
 };
 
 export const login = payload => ({
@@ -32,6 +35,11 @@ export const signup = payload => ({
 
 export const logout = () => ({
   type: ActionTypes.LOGOUT
+});
+
+export const deleteUser = payload => ({
+  type: ActionTypes.DELETE_USER,
+  payload
 });
 
 export const updateUser = payload => ({

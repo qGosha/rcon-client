@@ -6,6 +6,7 @@ import { user } from "src/reducers/User";
 import { auth } from "src/reducers/Auth";
 import { orders } from "src/reducers/Orders";
 import { realtors } from "src/reducers/Realtors";
+import { ordersList } from "src/reducers/OrdersList";
 
 import { rootEpic } from "src/epics/index";
 
@@ -15,7 +16,8 @@ const reducer = combineReducers({
   user,
   auth,
   orders,
-  realtors
+  realtors,
+  ordersList
 });
 
 export default createStore(

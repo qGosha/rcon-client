@@ -102,10 +102,10 @@ AddressForm.propTypes = {
   setZip: PropTypes.func.isRequired,
   setState: PropTypes.func.isRequired,
   setCity: PropTypes.func.isRequired,
-  street: PropTypes.string.isRequired,
-  tel: PropTypes.string.isRequired,
-  zip: PropTypes.string.isRequired,
+  street: PropTypes.string,
+  tel: PropTypes.string,
+  zip: PropTypes.string,
   state: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object
 };

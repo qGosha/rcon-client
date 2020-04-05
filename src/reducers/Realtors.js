@@ -8,7 +8,7 @@ const {
   UPDATE_REALTORS_RATING_SUCCESS,
   CREATE_REALTORS_RATING_SUCCESS
 } = ActionTypes;
-const { LOGOUT } = AuthActionTypes;
+const { LOGOUT, DELETE_USER_SUCCESS } = AuthActionTypes;
 
 export const defaultState = {
   items: [],
@@ -55,6 +55,7 @@ export const realtors = (state = defaultState, action) => {
     case CREATE_REALTORS_RATING_SUCCESS:
       return updateRealtorsRatingSuccess(state, payload);
     case LOGOUT:
+    case DELETE_USER_SUCCESS:
       return defaultState;
     default:
       return state;

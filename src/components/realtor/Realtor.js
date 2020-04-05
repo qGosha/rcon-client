@@ -13,6 +13,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import IconButton from "@material-ui/core/IconButton";
 import Rating from "@material-ui/lab/Rating";
+import { serverAddress } from "src/utils/Api";
 
 const useStyles = makeStyles(theme => ({
   iconButton: {
@@ -34,7 +35,8 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1)
   },
   personalInfo: {
-    display: "flex"
+    display: "flex",
+    alignItems: "center"
   },
   name: {
     marginLeft: theme.spacing(1)
@@ -44,6 +46,10 @@ const useStyles = makeStyles(theme => ({
   },
   location: {
     marginTop: theme.spacing(2)
+  },
+  avatar: {
+    height: 90,
+    width: 90
   }
 }));
 
@@ -88,7 +94,14 @@ export const Realtor = ({
     <Grid item xs={12} sm={6} md={4}>
       <Paper className={classes.item}>
         <div className={classes.personalInfo}>
-          <Avatar>{realtor.first_name[0].toUpperCase()}</Avatar>
+          <Avatar
+            className={classes.avatar}
+            variant="square"
+            alt="Avatar"
+            src={`${serverAddress}${realtor.avatar}`}
+          >
+            {realtor.avatar ? null : realtor.first_name[0].toUpperCase()}
+          </Avatar>
           <Typography className={classes.name}>{realtor.first_name}</Typography>
           <Typography className={classes.name}>{realtor.last_name}</Typography>
           <IconButton

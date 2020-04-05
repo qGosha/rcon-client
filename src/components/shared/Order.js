@@ -9,10 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-
-import { RouterLink } from "src/components/shared/RouterLink";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,12 +36,13 @@ const useStyles = makeStyles(theme => ({
   },
   headerContainer: {
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 }));
 const orderTypes = ["Buy", "Sell"];
 
-export const Order = ({ order, deleteOrder }) => {
+export const Order = ({ order, menuItems, icon }) => {
   const classes = useStyles();
   const { city, state, zip } = order.address;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -55,42 +53,46 @@ export const Order = ({ order, deleteOrder }) => {
     setAnchorEl(event.currentTarget);
   };
   return (
-    <Grid item>
+    <Grid item xs={12} sm={6} md={4}>
       <Paper className={classes.paper}>
         <div className={classes.headerContainer}>
-          <IconButton
-            size="small"
-            aria-label="more"
-            aria-haspopup="true"
-            onClick={handleClick}
-            className={classes.iconButton}
-          >
-            <MoreVertIcon className={classes.menuIcon} />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              component={RouterLink}
-              to={`/dashboard/order/edit/step1/${order.id}`}
-            >
-              Edit
-            </MenuItem>
-            <MenuItem onClick={() => deleteOrder(order.id)}>Delete</MenuItem>
-          </Menu>
-          <Avatar className={classes.avatar}>
-            <HomeWorkIcon />
-          </Avatar>
+          <div style={{ display: "flex" }}>
+            {menuItems && (
+              <IconButton
+                size="small"
+                aria-label="more"
+                aria-haspopup="true"
+                onClick={handleClick}
+                className={classes.iconButton}
+              >
+                <MoreVertIcon className={classes.menuIcon} />
+              </IconButton>
+            )}
+            {menuItems && (
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {menuItems}
+              </Menu>
+            )}
+            <Avatar className={classes.avatar}>
+              <HomeWorkIcon />
+            </Avatar>
+          </div>
+          {icon && icon}
         </div>
         <Typography variant="h6">
           <em>{`I want to ${orderTypes[order.order_type]} real estate`}</em>
         </Typography>
 
         <div className={classes.textContainer}>
+          {order.tel && (
+            <Typography variant="subtitle1">{`Phone: ${order.tel}`}</Typography>
+          )}
           <Typography variant="subtitle1">{`City: ${city}`}</Typography>
           <Typography variant="subtitle1">{`State: ${state}`}</Typography>
           <Typography variant="subtitle1">{`Zip: ${zip}`}</Typography>
@@ -102,5 +104,6 @@ export const Order = ({ order, deleteOrder }) => {
 
 Order.propTypes = {
   order: PropTypes.object.isRequired,
-  deleteOrder: PropTypes.func.isRequired
+  menuItems: PropTypes.element,
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.bool])
 };

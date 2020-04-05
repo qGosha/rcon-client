@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Route, Switch } from "react-router-dom";
 
-import { RealtorProfileFormLayout } from "src/components/forms/RealtorProfileFormLayout";
+import { RealtorProfileFormLayout } from "src/components/realtor/RealtorProfileFormLayout";
 
 const useStyles = makeStyles(theme => ({
   form: {
