@@ -10,7 +10,10 @@ export const ActionTypes = {
   DELETE_ORDER_ERROR: "DELETE_ORDER_ERROR",
   EDIT_CLIENT_ORDER: "EDIT_CLIENT_ORDER",
   EDIT_CLIENT_ORDER_SUCCESS: "EDIT_CLIENT_ORDER_SUCCESS",
-  EDIT_CLIENT_ORDER_ERROR: "EDIT_CLIENT_ORDER_ERROR"
+  EDIT_CLIENT_ORDER_ERROR: "EDIT_CLIENT_ORDER_ERROR",
+  MAIL_MY_ORDERS: "MAIL_MY_ORDERS",
+  MAIL_MY_ORDERS_SUCCESS: "MAIL_MY_ORDERS_SUCCESS",
+  MAIL_MY_ORDERS_ERROR: "MAIL_MY_ORDERS_ERROR"
 };
 
 export const sendClientOrder = payload => ({
@@ -29,5 +32,10 @@ export const deleteOrder = payload => ({
 
 export const editClientOrder = payload => ({
   type: ActionTypes.EDIT_CLIENT_ORDER,
+  payload
+});
+
+export const mailMyOrders = payload => ({
+  type: ActionTypes.MAIL_MY_ORDERS,
   payload
 });

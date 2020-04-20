@@ -1,3 +1,4 @@
+import { ActionTypes as OrdersActionTypes } from "src/actions/Orders";
 import { ActionTypes } from "src/actions/Realtors";
 import { ActionTypes as AuthActionTypes } from "src/actions/User";
 
@@ -9,13 +10,15 @@ const {
   CREATE_REALTORS_RATING_SUCCESS
 } = ActionTypes;
 const { LOGOUT, DELETE_USER_SUCCESS } = AuthActionTypes;
+const { MAIL_MY_ORDERS_SUCCESS } = OrdersActionTypes;
 
 export const defaultState = {
   items: [],
   loading: false,
   error: {},
   totalCount: 0,
-  ratedByMeIds: []
+  ratedByMeIds: [],
+  sentOrdersToIds: []
 };
 
 const fetchRealtorsListSuccess = (state, payload) => {
@@ -24,7 +27,8 @@ const fetchRealtorsListSuccess = (state, payload) => {
     items: payload.items,
     loading: false,
     totalCount: payload.total,
-    ratedByMeIds: payload.rated_by_me
+    ratedByMeIds: payload.rated_by_me,
+    sentOrdersToIds: payload.responded_or_sent_orders || state.sentOrdersToIds
   };
 };
 
@@ -54,6 +58,8 @@ export const realtors = (state = defaultState, action) => {
     case UPDATE_REALTORS_RATING_SUCCESS:
     case CREATE_REALTORS_RATING_SUCCESS:
       return updateRealtorsRatingSuccess(state, payload);
+    case MAIL_MY_ORDERS_SUCCESS:
+      return { ...state, sentOrdersToIds: [...state.sentOrdersToIds, payload] };
     case LOGOUT:
     case DELETE_USER_SUCCESS:
       return defaultState;

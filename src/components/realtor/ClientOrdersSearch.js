@@ -19,7 +19,7 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { SELECT_ALL } from "src/components/constants/states";
 import { SearchWithStateSelectForm } from "src/components/shared/forms/SearchWithStateSelectForm";
 import { fetchClientOrdersList } from "src/actions/OrdersList";
-
+import { mailRealtorProfile } from "src/actions/RealtorProfiles";
 import { Order } from "src/components/shared/Order";
 
 const ALL = "All";
@@ -34,7 +34,8 @@ const ClientOrdersSearchComponent = ({
   loading,
   orders,
   ordersTotal,
-  respondedTo
+  respondedTo,
+  mailRealtorProfile
 }) => {
   const userState = user.realtor_profile.address.state;
   const [pageNum, setPageNum] = useState(1);
@@ -44,6 +45,18 @@ const ClientOrdersSearchComponent = ({
   const [type, setType] = useState(ALL);
   const [zip, setZip] = useState("");
   const [zipValidValue, setZipValidValue] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [activeOrder, setActiveOrder] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setActiveOrder(null);
+  };
+
+  const handleClick = (e, id) => {
+    setAnchorEl(e.currentTarget);
+    setActiveOrder(id);
+  };
 
   const zipInputChange = e => {
     const { value } = e.target;
@@ -146,8 +159,13 @@ const ClientOrdersSearchComponent = ({
           <Order
             key={order.id}
             order={order}
-            menuItems={!respondedTo.includes(order.id) && menuItems(order)}
+            menuItems={
+              (!respondedTo.includes(order.id) && menuItems(order)) || undefined
+            }
             icon={respondedTo.includes(order.id) && respondedToSign}
+            anchorEl={anchorEl}
+            handleClick={handleClick}
+            handleClose={handleClose}
           />
         ))}
       <Dialog
@@ -166,11 +184,21 @@ const ClientOrdersSearchComponent = ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => toggleConfirmationOpen(false)} color="primary">
+          <Button
+            onClick={() => {
+              toggleConfirmationOpen(false);
+              handleClose();
+            }}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button
-            onClick={() => toggleConfirmationOpen(false)}
+            onClick={() => {
+              mailRealtorProfile({ order_id: activeOrder });
+              toggleConfirmationOpen(false);
+              handleClose();
+            }}
             color="primary"
             autoFocus
           >
@@ -188,7 +216,8 @@ ClientOrdersSearchComponent.propTypes = {
   ordersTotal: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,
   fetchClientOrdersList: PropTypes.func.isRequired,
-  respondedTo: PropTypes.array.isRequired
+  respondedTo: PropTypes.array.isRequired,
+  mailRealtorProfile: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -200,5 +229,6 @@ const mapStateToProps = state => ({
 });
 
 export const ClientOrdersSearch = connect(mapStateToProps, {
-  fetchClientOrdersList
+  fetchClientOrdersList,
+  mailRealtorProfile
 })(ClientOrdersSearchComponent);

@@ -42,16 +42,17 @@ const useStyles = makeStyles(theme => ({
 }));
 const orderTypes = ["Buy", "Sell"];
 
-export const Order = ({ order, menuItems, icon }) => {
+export const Order = ({
+  order,
+  menuItems,
+  anchorEl,
+  handleClose,
+  handleClick,
+  icon
+}) => {
   const classes = useStyles();
   const { city, state, zip } = order.address;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
+
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Paper className={classes.paper}>
@@ -62,7 +63,7 @@ export const Order = ({ order, menuItems, icon }) => {
                 size="small"
                 aria-label="more"
                 aria-haspopup="true"
-                onClick={handleClick}
+                onClick={e => handleClick(e, order.id)}
                 className={classes.iconButton}
               >
                 <MoreVertIcon className={classes.menuIcon} />
@@ -90,9 +91,7 @@ export const Order = ({ order, menuItems, icon }) => {
         </Typography>
 
         <div className={classes.textContainer}>
-          {order.tel && (
-            <Typography variant="subtitle1">{`Phone: ${order.tel}`}</Typography>
-          )}
+          <Typography variant="subtitle1">{`Phone: ${order.tel}`}</Typography>
           <Typography variant="subtitle1">{`City: ${city}`}</Typography>
           <Typography variant="subtitle1">{`State: ${state}`}</Typography>
           <Typography variant="subtitle1">{`Zip: ${zip}`}</Typography>
@@ -105,5 +104,8 @@ export const Order = ({ order, menuItems, icon }) => {
 Order.propTypes = {
   order: PropTypes.object.isRequired,
   menuItems: PropTypes.element,
-  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.bool])
+  icon: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
+  handleClose: PropTypes.func,
+  handleClick: PropTypes.func,
+  anchorEl: PropTypes.oneOfType([PropTypes.string, null])
 };

@@ -1,6 +1,8 @@
 import { ActionTypes } from "src/actions/OrdersList";
 import { ActionTypes as AuthActionTypes } from "src/actions/User";
+import { ActionTypes as RealtorProfilesActionTypes } from "src/actions/RealtorProfiles";
 
+const { MAIL_REALTOR_PROFILE_SUCCESS } = RealtorProfilesActionTypes;
 const {
   SEARCH_ORDERS,
   SEARCH_ORDERS_SUCCESS,
@@ -36,6 +38,8 @@ export const ordersList = (state = defaultState, action) => {
       return { ...state, loading: false, error: payload };
     case LOAD_RESPONDED_ORDERS_LIST_SUCCESS:
       return { ...state, respondedToOrders: payload };
+    case MAIL_REALTOR_PROFILE_SUCCESS:
+      return { ...state, respondedTo: [...state.respondedTo, payload] };
     case LOGOUT:
     case DELETE_USER_SUCCESS:
       return defaultState;

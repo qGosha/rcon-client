@@ -1,23 +1,22 @@
-import { connect } from "react-redux";
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
-import { Realtor } from "src/components/realtor/Realtor";
+import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { mailMyOrders } from "src/actions/Orders";
 import {
+  createRating,
   fetchRealtorsList,
-  updateRating,
-  createRating
+  updateRating
 } from "src/actions/Realtors";
-import { SearchWithStateSelectForm } from "src/components/shared/forms/SearchWithStateSelectForm";
 import { SELECT_ALL } from "src/components/constants/states";
+import { Realtor } from "src/components/realtor/Realtor";
+import { SearchWithStateSelectForm } from "src/components/shared/forms/SearchWithStateSelectForm";
 
 const RealtorSearchComponent = ({
   realtors,
@@ -26,12 +25,14 @@ const RealtorSearchComponent = ({
   fetchRealtorsList,
   updateRating,
   ratedByMeIds,
-  createRating
+  createRating,
+  sentOrdersToIds,
+  mailMyOrders
 }) => {
   const [pageNum, setPageNum] = useState(1);
   const [offset, setOffset] = useState(0);
   const [isConfirmationOpen, toggleConfirmationOpen] = useState(false);
-
+  const [activeRealtor, setActiveRealtor] = useState(null);
   const [state, setState] = useState(SELECT_ALL);
 
   useEffect(() => {
@@ -66,11 +67,14 @@ const RealtorSearchComponent = ({
             updateRating={updateRating}
             hasBeenRated={ratedByMeIds.includes(realtor.id)}
             createRating={createRating}
+            setActiveRealtor={setActiveRealtor}
+            sentOrdersToOrHasResponded={sentOrdersToIds.includes(realtor.id)}
           />
         ))}
       <Dialog
         open={isConfirmationOpen}
         onClose={() => toggleConfirmationOpen(false)}
+        onExit={() => setActiveRealtor(null)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -85,7 +89,10 @@ const RealtorSearchComponent = ({
             Cancel
           </Button>
           <Button
-            onClick={() => toggleConfirmationOpen(false)}
+            onClick={() => {
+              mailMyOrders({ realtor_id: activeRealtor });
+              toggleConfirmationOpen(false);
+            }}
             color="primary"
             autoFocus
           >
@@ -104,7 +111,9 @@ RealtorSearchComponent.propTypes = {
   realtorsCount: PropTypes.number.isRequired,
   updateRating: PropTypes.func.isRequired,
   ratedByMeIds: PropTypes.array.isRequired,
-  createRating: PropTypes.func.isRequired
+  createRating: PropTypes.func.isRequired,
+  mailMyOrders: PropTypes.func.isRequired,
+  sentOrdersToIds: PropTypes.array.isRequired
 };
 
 RealtorSearchComponent.defaultProps = {
@@ -115,11 +124,13 @@ const mapStateToProps = state => ({
   realtors: state.realtors.items,
   loading: state.realtors.loading,
   realtorsCount: state.realtors.totalCount,
-  ratedByMeIds: state.realtors.ratedByMeIds
+  ratedByMeIds: state.realtors.ratedByMeIds,
+  sentOrdersToIds: state.realtors.sentOrdersToIds
 });
 
 export const RealtorSearch = connect(mapStateToProps, {
   fetchRealtorsList,
   updateRating,
-  createRating
+  createRating,
+  mailMyOrders
 })(RealtorSearchComponent);

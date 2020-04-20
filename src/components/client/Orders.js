@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { loadOrders, deleteOrder } from "src/actions/Orders";
 
@@ -12,7 +12,6 @@ import { RouterLink } from "src/components/shared/RouterLink";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    justifyContent: "center",
     padding: theme.spacing(3)
   }
 }));
@@ -27,6 +26,15 @@ const OrdersComponent = ({
     if (!ordersHaveBeenLoaded) loadOrders();
   }, [loadOrders, ordersHaveBeenLoaded]);
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClick = (e, _) => {
+    setAnchorEl(e.currentTarget);
+  };
 
   const menuItems = order => {
     return (
@@ -37,7 +45,14 @@ const OrdersComponent = ({
         >
           Edit
         </MenuItem>
-        <MenuItem onClick={() => deleteOrder(order.id)}>Delete</MenuItem>
+        <MenuItem
+          onClick={() => {
+            deleteOrder(order.id);
+            handleClose();
+          }}
+        >
+          Delete
+        </MenuItem>
       </div>
     );
   };
@@ -45,7 +60,14 @@ const OrdersComponent = ({
   return (
     <Grid container spacing={1} className={classes.root}>
       {orders.map(order => (
-        <Order key={order.id} order={order} menuItems={menuItems(order)} />
+        <Order
+          key={order.id}
+          order={order}
+          menuItems={menuItems(order)}
+          anchorEl={anchorEl}
+          handleClick={handleClick}
+          handleClose={handleClose}
+        />
       ))}
     </Grid>
   );

@@ -1,10 +1,8 @@
+import { ofType } from "redux-observable";
 import { from, of } from "rxjs";
 import { catchError, map, mergeMap, tap } from "rxjs/operators";
-import { ofType } from "redux-observable";
-
-import { Api } from "src/utils/Api";
 import { ActionTypes } from "src/actions/Orders";
-
+import { Api } from "src/utils/Api";
 import history from "src/utils/history";
 
 export const sendClientOrder = actions$ =>
@@ -78,6 +76,25 @@ export const editClientOrder = actions$ =>
         catchError(error => {
           return of({
             type: ActionTypes.EDIT_CLIENT_ORDER_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );
+
+export const mailMyOrders = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.MAIL_MY_ORDERS),
+    mergeMap(action =>
+      from(Api.mailMyOrders(action.payload)).pipe(
+        map(({ realtor_id }) => ({
+          type: ActionTypes.MAIL_MY_ORDERS_SUCCESS,
+          payload: realtor_id
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.MAIL_MY_ORDERS_ERROR,
             payload: error
           });
         })

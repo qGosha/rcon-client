@@ -1,18 +1,17 @@
-import React from "react";
-import PropTypes from "prop-types";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
-import Popover from "@material-ui/core/Popover";
-
 import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Paper from "@material-ui/core/Paper";
+import Popover from "@material-ui/core/Popover";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import IconButton from "@material-ui/core/IconButton";
 import Rating from "@material-ui/lab/Rating";
+import PropTypes from "prop-types";
+import React from "react";
 import { serverAddress } from "src/utils/Api";
 
 const useStyles = makeStyles(theme => ({
@@ -58,7 +57,9 @@ export const Realtor = ({
   toggleConfirmationOpen,
   updateRating,
   createRating,
-  hasBeenRated
+  hasBeenRated,
+  setActiveRealtor,
+  sentOrdersToOrHasResponded
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,6 +79,7 @@ export const Realtor = ({
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
+    setActiveRealtor(realtor.id);
   };
 
   const handleChange = data => {
@@ -104,15 +106,24 @@ export const Realtor = ({
           </Avatar>
           <Typography className={classes.name}>{realtor.first_name}</Typography>
           <Typography className={classes.name}>{realtor.last_name}</Typography>
-          <IconButton
-            size="small"
-            aria-label="more"
-            aria-haspopup="true"
-            onClick={handleClick}
-            className={classes.iconButton}
-          >
-            <MoreHorizIcon className={classes.menuIcon} />
-          </IconButton>
+          {sentOrdersToOrHasResponded ? (
+            <div
+              className={classes.iconButton}
+              title="You've already sent your orders to this realtor"
+            >
+              <CheckCircleIcon style={{ color: "green" }} />{" "}
+            </div>
+          ) : (
+            <IconButton
+              size="small"
+              aria-label="more"
+              aria-haspopup="true"
+              onClick={handleClick}
+              className={classes.iconButton}
+            >
+              <MoreHorizIcon className={classes.menuIcon} />
+            </IconButton>
+          )}
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -122,7 +133,6 @@ export const Realtor = ({
           >
             <MenuItem
               onClick={() => {
-                //add actual orders sending function
                 handleClose();
                 toggleConfirmationOpen(true);
               }}
@@ -180,5 +190,7 @@ Realtor.propTypes = {
   toggleConfirmationOpen: PropTypes.func.isRequired,
   updateRating: PropTypes.func.isRequired,
   createRating: PropTypes.func.isRequired,
-  hasBeenRated: PropTypes.bool.isRequired
+  hasBeenRated: PropTypes.bool.isRequired,
+  setActiveRealtor: PropTypes.func.isRequired,
+  sentOrdersToOrHasResponded: PropTypes.bool.isRequired
 };

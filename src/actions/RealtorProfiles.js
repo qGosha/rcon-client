@@ -4,7 +4,10 @@ export const ActionTypes = {
   SEND_REALTOR_PROFILE_ERROR: "SEND_REALTOR_PROFILE_ERROR",
   EDIT_REALTOR_PROFILE: "EDIT_REALTOR_PROFILE",
   EDIT_REALTOR_PROFILE_SUCCESS: "EDIT_REALTOR_PROFILE_SUCCESS",
-  EDIT_REALTOR_PROFILE_ERROR: "EDIT_REALTOR_PROFILE_ERROR"
+  EDIT_REALTOR_PROFILE_ERROR: "EDIT_REALTOR_PROFILE_ERROR",
+  MAIL_REALTOR_PROFILE: "MAIL_REALTOR_PROFILE",
+  MAIL_REALTOR_PROFILE_SUCCESS: "MAIL_REALTOR_PROFILE_SUCCESS",
+  MAIL_REALTOR_PROFILE_ERROR: "MAIL_REALTOR_PROFILE_ERROR"
 };
 
 export const sendRealtorProfile = payload => ({
@@ -14,5 +17,10 @@ export const sendRealtorProfile = payload => ({
 
 export const editRealtorProfile = payload => ({
   type: ActionTypes.EDIT_REALTOR_PROFILE,
+  payload
+});
+
+export const mailRealtorProfile = payload => ({
+  type: ActionTypes.MAIL_REALTOR_PROFILE,
   payload
 });

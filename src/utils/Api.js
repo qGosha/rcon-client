@@ -129,5 +129,17 @@ export const Api = {
       .get(`${serverAddress}/api/v1/responded_orders`)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
+  },
+  mailRealtorProfile(payload) {
+    return axios
+      .post(`${serverAddress}/api/v1/send_realtor_profile`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
+  },
+  mailMyOrders(payload) {
+    return axios
+      .post(`${serverAddress}/api/v1/send_my_orders`, payload)
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
   }
 };

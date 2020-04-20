@@ -45,3 +45,22 @@ export const editRealtorProfile = actions$ =>
       )
     )
   );
+
+export const mailRealtorProfile = actions$ =>
+  actions$.pipe(
+    ofType(ActionTypes.MAIL_REALTOR_PROFILE),
+    mergeMap(action =>
+      from(Api.mailRealtorProfile(action.payload)).pipe(
+        map(({ order_id }) => ({
+          type: ActionTypes.MAIL_REALTOR_PROFILE_SUCCESS,
+          payload: order_id
+        })),
+        catchError(error => {
+          return of({
+            type: ActionTypes.MAIL_REALTOR_PROFILE_ERROR,
+            payload: error
+          });
+        })
+      )
+    )
+  );

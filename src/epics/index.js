@@ -1,33 +1,33 @@
 import { combineEpics } from "redux-observable";
-
 import {
-  login,
-  checkLoggedIn,
-  signup,
-  logout,
-  updateUser,
-  deleteUser
-} from "src/epics/User";
-import {
-  sendClientOrder,
-  loadOrders,
   deleteOrder,
-  editClientOrder
+  editClientOrder,
+  loadOrders,
+  mailMyOrders,
+  sendClientOrder
 } from "src/epics/Orders";
-import {
-  fetchRealtorsList,
-  updateRating,
-  createRating
-} from "src/epics/Realtors";
-import {
-  sendRealtorProfile,
-  editRealtorProfile
-} from "src/epics/RealtorProfiles";
-
 import {
   fetchClientOrdersList,
   loadRespondedOrdersList
-} from "src/epics/Orderslist";
+} from "src/epics/OrdersList";
+import {
+  editRealtorProfile,
+  mailRealtorProfile,
+  sendRealtorProfile
+} from "src/epics/RealtorProfiles";
+import {
+  createRating,
+  fetchRealtorsList,
+  updateRating
+} from "src/epics/Realtors";
+import {
+  checkLoggedIn,
+  deleteUser,
+  login,
+  logout,
+  signup,
+  updateUser
+} from "src/epics/User";
 
 export const rootEpic = combineEpics(
   login,
@@ -46,5 +46,7 @@ export const rootEpic = combineEpics(
   editRealtorProfile,
   deleteUser,
   fetchClientOrdersList,
-  loadRespondedOrdersList
+  loadRespondedOrdersList,
+  mailRealtorProfile,
+  mailMyOrders
 );

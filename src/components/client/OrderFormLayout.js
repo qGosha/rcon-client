@@ -1,23 +1,19 @@
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-
-import { validate } from "src/utils/validation";
-import { sendClientOrder, editClientOrder } from "src/actions/Orders";
-
+import { editClientOrder, sendClientOrder } from "src/actions/Orders";
 import { SimpleErrorsList } from "src/components/shared/Errors";
 import { AddressForm } from "src/components/shared/forms/AddressForm";
-
 import history from "src/utils/history";
+import { validate } from "src/utils/validation";
 
 const useStyles = makeStyles(theme => ({
   paper: {
