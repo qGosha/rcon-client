@@ -1,9 +1,10 @@
 import axios from "axios";
 
 export const serverAddress =
-  process.env.NODE_ENV === "development"
-    ? "http://rcon.us-west-2.elasticbeanstalk.com"
-    : "rcon.us-west-2.elasticbeanstalk.com";
+  "http://ec2-54-69-174-46.us-west-2.compute.amazonaws.com/";
+// process.env.NODE_ENV === "development"
+//   ? "http://rcon.us-west-2.elasticbeanstalk.com"
+//   : "rcon.us-west-2.elasticbeanstalk.com";
 
 export const Api = {
   login(payload) {
