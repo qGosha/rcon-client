@@ -2,8 +2,8 @@ import axios from "axios";
 
 export const serverAddress =
   process.env.NODE_ENV === "development"
-    ? "http://localhost:3001"
-    : "http://my-app.herokuapp.com";
+    ? "http://rcon.us-west-2.elasticbeanstalk.com"
+    : "rcon.us-west-2.elasticbeanstalk.com";
 
 export const Api = {
   login(payload) {
